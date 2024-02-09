@@ -1,0 +1,8 @@
+.mainCardLesson{
+    transition: 0.4s;
+}
+
+.lessonCard .mainCardLesson:hover {
+    transform: translateY(-0.5rem);
+    box-shadow: 0.5rem 0.75rem 1.5rem #292828;
+}

@@ -1,0 +1,36 @@
+@media (max-width: 300px){
+    .gridContainer{
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+@media (min-width: 301px) and (max-width: 500px){
+    .gridContainer{
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (min-width: 501px) and (max-width: 620px) {
+    .gridContainer {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (min-width: 621px) and (max-width: 840px) {
+    .gridContainer {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+    }
+}
+
+.homeContainer{
+    background: #bdc3c7;
+        /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #2c3e50, #bdc3c7);
+        /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #2c3e50, #bdc3c7);
+        /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}

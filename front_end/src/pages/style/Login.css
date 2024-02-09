@@ -1,0 +1,156 @@
+/* .form-box{
+    width: 600px;
+    height: 580px;
+    background-color: rgba(0,0,0,0.8);
+    margin: 2% auto;
+    padding: 50px 0;
+    color: #fff;
+    box-shadow: 0 0 20px 2px rgba(red, green, blue, alpha);
+    position: relative;
+}
+
+.formLogin{
+    position: relative;
+    bottom: -50px;
+    margin-bottom: 10px;
+}
+
+.loginHeader{
+   font-size: 36px;
+    margin: 0 auto;
+    margin-bottom: 0;
+    margin-top: -20px;
+    text-align: center;
+    font-weight: bold;
+}
+
+.input-box{
+    margin: 30px auto;
+    width: 80%;
+    border-bottom: 1px solid #fff;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    position: relative;
+    
+}
+
+/* .input-box input{
+    border: none;
+    width: 90%;
+    outline: none;
+    background: transparent;
+    color: #fff;
+    
+} */
+
+/* ::placeholder{
+    color: #ccc;
+}
+
+.eye{
+    position: absolute;
+    justify-content: center;
+    bottom: 15px;   
+    right: 4px;
+}
+
+#hide1{
+    display: none;
+}
+
+
+.eye{
+    bottom: 15px;
+}
+
+.login-btn{
+    margin: 30px auto;
+    width: 70%;
+    display: block;
+    outline: none;
+    padding: 10px 0;
+    border: 1px solid #fff;
+    cursor: pointer;
+    background: transparent;
+    color: #fff;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.fa{
+    margin-right: 10px;
+}
+
+.forgot-password{
+    position: absolute;
+    right: 225px;
+    text-align: center;
+    bottom: 25%;
+}
+
+.forgot-password a{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.forgot-password a:hover{
+    text-decoration: underline;
+}
+
+.mastra{
+    position: absolute;
+    width: 500px;
+    bottom: 115px;
+    right: 50px;
+}
+
+.formSign{
+    position: relative;
+    bottom: -70px;
+}
+
+.register-btn {
+    margin: 10px auto 10px;
+        width: 50%;
+        display: block;
+        outline: none;
+        padding: 7px 0;
+        border: 1px solid #fff;
+        cursor: pointer;
+        background: transparent;
+        color: #fff;
+        font-size: 18px;
+        font-weight: bold;
+        position: absolute;
+        bottom: 45px;
+        right: 151px;
+}
+
+.register-btn:hover{
+    background: #34495e;
+    color: #fff;
+}
+ */
+
+
+
+ .loginContainer{
+    background: linear-gradient(-45deg, rgba(2, 0, 36, 1) 0%, rgba(7, 7, 110, 1) 64%, rgba(0, 212, 255, 1) 100%);
+background-size: 400% 400%;
+    animation: gradient 15s ease infinite;
+    
+ }
+
+ @keyframes gradient {
+     0% {
+         background-position: 0% 50%;
+     }
+
+     50% {
+         background-position: 100% 50%;
+     }
+
+     100% {
+         background-position: 0% 50%;
+     }
+ }

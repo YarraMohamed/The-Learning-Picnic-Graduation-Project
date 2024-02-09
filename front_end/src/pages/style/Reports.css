@@ -1,0 +1,38 @@
+.reports {
+    padding: 2rem;
+    background: linear-gradient(45deg, #49a09d, #2c3582);
+}
+
+@media (min-width: 175px) and (max-width: 250px){
+    .reportsTitle{
+        font-size: 1.875rem;
+        line-height: 2.25rem;
+    }
+
+    .fullName{
+        font-size: 1rem;
+            /* 16px */
+            line-height: 1.5rem;
+    }
+}
+
+@media (max-width: 175px) {
+    .reportsTitle {
+        font-size: 1.5rem;
+        line-height: 2rem;
+    }
+
+        .fullName {
+            font-size: 14px;
+                line-height: 1.25rem;
+                margin-left: auto;
+                margin-right: auto;
+        }
+}
+
+@media (min-width: 250px) and (max-width: 600px) {
+    .reportsTitle {
+        font-size: 2.25rem;
+        line-height: 2.5rem;
+    }
+}

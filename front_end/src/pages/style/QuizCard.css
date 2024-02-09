@@ -1,0 +1,7 @@
+.mainCardQuiz{
+    box-shadow: 4px 3px 8px 5px rgb(31, 31, 31);
+}
+
+.mainCardQuiz:hover{
+    border: 2.4px solid rgb(1, 1, 107);
+}
