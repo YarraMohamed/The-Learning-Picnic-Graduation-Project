@@ -35,7 +35,7 @@ The Learning Picnic is an innovative educational platform meticulously crafted f
 
 Learning Picnic stands at the intersection of technology and education, With its dynamic features, it empowers teachers, engages students, and fosters a collaborative educational experience. The project not only facilitates effective teaching but also makes the learning process for students fun.
 
-the project is mainly for science subject in the fourth grade of primary school, but it can be used for all educational levels and its designed for materials in English only.
+The project is mainly for science subject in the fourth grade of primary school, but it can be used for all educational levels and its designed for materials in English only.
 
 # Project Demo
 
