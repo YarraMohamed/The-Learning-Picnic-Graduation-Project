@@ -32,7 +32,7 @@ const register = asyncWrapper(async (req, res, next) => {
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { user: newUser } })
 
 
-})
+});
 
 const login = asyncWrapper(async (req, res, next) => {
     const { email, password } = req.body;
@@ -56,8 +56,24 @@ const login = asyncWrapper(async (req, res, next) => {
         const error = appError.create("something wroung", 500, httpStatusText.ERROR)
         return next(error)
     }
-})
+});
 
+
+const viewAccount = asyncWrapper(async (req,res,next)=> {
+    const userId = req.params.id
+    const user = await User.findById(
+       { _id : userId },
+       {token:0,password:0}
+        )
+    if(!user){
+        const error = appError.create("No user found",400,httpStatusText.FAIL)
+        return next(error)
+    }
+    else {
+        res.status(200).json({status : httpStatusText.SUCCESS ,data : user})
+    }
+
+});
 
 /* const logout = (req, res,) => {
     // const token = req.headers['Authorization'] || req.headers['authorization'] 
@@ -76,5 +92,6 @@ const login = asyncWrapper(async (req, res, next) => {
 module.exports = {
     register,
     login,
+    viewAccount
     //logout
 }
