@@ -5,17 +5,9 @@ import image from '../assets/logo2.png'
 import profile from '../assets/Profile_Photo.png'
 import '../pages/style/Header.css'
 import axios from 'axios'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 import { removeAuthUser, getAuthUser } from '../helper/Storage'
 
-
-const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Lessons', href: '/lessons' },
-  { name: 'Quizzes', href: '/quizzes' },
-  { name: 'Contact', href: '/contact' },
-  { name: 'Login', href: '/login' }
-]
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(' ')
@@ -61,15 +53,13 @@ const Header = () => {
                 </div>
                 <div className="hidden sm:ml-16 sm:block MainContent">
                   <div className="flex space-x-4">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="StyleCurrent rounded-md px-3 py-2 text-lg font-black"
-                      >
-                        {item.name}
-                      </a>
-                    ))}
+                    <Link to={"/"} key={'Home'} className="StyleCurrent rounded-md px-3 py-2 text-lg font-black">Home</Link>
+                    <Link to={"/lessons"} key={'Lessons'} className="StyleCurrent rounded-md px-3 py-2 text-lg font-black">Lessons</Link>
+                    <Link to={"/quizzes"} key={'Quizzes'} className="StyleCurrent rounded-md px-3 py-2 text-lg font-black">Quizzes</Link>
+                    <Link to={"/contact"} key={'Contact'} className="StyleCurrent rounded-md px-3 py-2 text-lg font-black">Contact</Link>
+                    
+                    {!Auth && <Link to={"/login"} key={'Login'} className="StyleCurrent rounded-md px-3 py-2 text-lg font-black">Login</Link>}
+
                   </div>
                 </div>
               </div>
@@ -101,35 +91,36 @@ const Header = () => {
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="/account"
+                          <Link
+                            to={"/account"}
                             className={classNames(active ? 'bg-gray-300' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Your Profile
-                          </a>
+                          </Link>
                         )}
                       </Menu.Item>
                       <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="/reports"
+                          <Link
+                            to={"/reports"}
                             className={classNames(active ? 'bg-gray-300' : '', 'block px-4 py-2 text-sm text-gray-700')}
                           >
                             Reports
-                          </a>
+                          </Link>
                         )}
                       </Menu.Item>
-                      <Menu.Item>
+                      {Auth && <Menu.Item>
                         {({ active }) => (
-                          <a
-                            href="#"
+                          <Link
+                            to={"#"}
                             className={classNames(active ? 'bg-red-500 text-white' : '', 'block px-4 py-2 text-base font-medium text-red-700')}
                             onClick={Logout}
                           >
                             Sign out
-                          </a>
+                          </Link>
                         )}
-                      </Menu.Item>
+                      </Menu.Item>}
+                      
                     </Menu.Items>
                   </Transition>
                 </Menu>
@@ -138,17 +129,22 @@ const Header = () => {
           </div>
 
           <Disclosure.Panel className="sm:hidden">
-            <div className="space-y-1 px-2 pb-3 pt-2">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className="block rounded-md px-3 py-2 text-base font-medium text-gray-300"
-                >
-                  {item.name}
+            <div className="space-y-1 px-2 pb-3 pt-2"> 
+                <Disclosure.Button key={'Home'}  as="a"  href={"/"}  className="block rounded-md px-3 py-2 text-base font-medium text-gray-300">
+                  Home
                 </Disclosure.Button>
-              ))}
+                <Disclosure.Button key={'Lessons'}  as="a"  href={"/lessons"}  className="block rounded-md px-3 py-2 text-base font-medium text-gray-300">
+                  Lessons
+                </Disclosure.Button>
+                <Disclosure.Button key={'Quizzes'}  as="a"  href={"/quizzes"}  className="block rounded-md px-3 py-2 text-base font-medium text-gray-300">
+                  Quizzes
+                </Disclosure.Button>
+                <Disclosure.Button key={'Contact'}  as="a"  href={"/contact"}  className="block rounded-md px-3 py-2 text-base font-medium text-gray-300">
+                  Contact
+                </Disclosure.Button>
+              {!Auth && <Disclosure.Button key={'Login'} as="a" href={"/login"} className="block rounded-md px-3 py-2 text-base font-medium text-gray-300">
+                Login
+              </Disclosure.Button>}
             </div>
           </Disclosure.Panel>
         </>
