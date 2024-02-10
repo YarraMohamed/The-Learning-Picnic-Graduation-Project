@@ -9,6 +9,9 @@ router.route("/register")
 router.route("/login")
     .post(userController.login)
 
+router.route("/:id")
+      .get(userController.viewAccount)
+
 /* router.route("/logout")
     .post(userController.logout) */
 
