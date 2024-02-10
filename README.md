@@ -37,6 +37,8 @@ Learning Picnic stands at the intersection of technology and education, With its
 
 The project is mainly for science subject in the fourth grade of primary school, but it can be used for all educational levels and its designed for materials in English only.
 
+# NLP
+
 # Project Demo
 
 # Documentation
