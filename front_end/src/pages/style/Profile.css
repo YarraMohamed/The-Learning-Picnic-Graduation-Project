@@ -1,0 +1,37 @@
+.cardAccount {
+    justify-content: center;
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid rgba(0, 0, 0, .125);
+    border-radius: 0.25rem;
+    box-shadow: 3px 1px 10px 5px rgb(60, 58, 58);
+}
+
+.sectionAccount {
+    padding: 120px 0;
+    overflow: hidden;
+    background: #fff;
+}
+
+.backgroundCard {
+    background: #063664;
+}
+
+@media (max-width:350px){
+    .imageAccount{
+        display: none;
+    }
+}
+
+@media (min-width:140px) and (max-width:280px){
+    .backgroundCard{
+        padding: 1rem;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .card-body{
+        padding: 1rem;
+        padding-left: 0;
+    }
+}
