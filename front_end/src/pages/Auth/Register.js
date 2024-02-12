@@ -21,7 +21,7 @@ const RegisterFun = (e)=>{
     e.preventDefault();
     console.log(register);
     setRegister({...register,loading:true})
-  axios.post("http://localhost:4000/users/register", {
+  axios.post("http://localhost:2222/users/register", {
       firstName: register.firstName,
       lastName: register.lastName,
       email : register.email,
@@ -35,7 +35,7 @@ const RegisterFun = (e)=>{
 
     })
     .catch((errors)=>{
-      setRegister({...register,loading:false,err:errors.response.data.msg});
+      setRegister({...register,loading:false,err: errors.response.data.error.message});
     })
   };
 

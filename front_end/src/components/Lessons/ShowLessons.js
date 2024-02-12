@@ -2,12 +2,13 @@ import React from 'react'
 import { useState } from 'react'
 import ShowLessonsStudent from './Student/ShowLessonsStudent'
 import ShowLessonsTeacher from './Teacher/ShowLessonsTeacher'
+import { getAuthUser } from '../../helper/Storage'
 
 
 const ShowLessons = () => {
 
-    const [loggedIn, setLoggedIn] = useState(true)
-    if (loggedIn) {
+    const Auth = getAuthUser();
+    if (Auth && Auth.role === "TEACHER") {
         return (
             <ShowLessonsTeacher/>
         )

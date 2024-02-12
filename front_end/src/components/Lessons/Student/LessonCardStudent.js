@@ -3,7 +3,7 @@ import '../../../pages/style/CardStudent.css'
 import studytime from '../../../assets/study-time.png'
 
 
-const LessonCardStudent = () => {
+const LessonCardStudent = (props) => {
 
   return (
 
@@ -11,7 +11,7 @@ const LessonCardStudent = () => {
       <div className="lessonCard py-2">  
         <div class="mainCardLesson mx-1 p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-zinc-400 dark:border-gray-700">
           <img src={studytime} height={50} alt=""/>
-          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">Lesson Title</h5>
+          <h5 class="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white">{props.name}</h5>
 
           <button type="button" class="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-3.5 py-2 me-1 mb-2 dark:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800">Show Lesson</button>
 

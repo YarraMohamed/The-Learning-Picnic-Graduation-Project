@@ -23,16 +23,16 @@ const Login = () => {
   const LoginFun = (e)=>{
     e.preventDefault();
     setLogin({...login, loading:true})
-    axios.post("http://localhost:4000/users/login",{
+    axios.post("http://localhost:2222/users/login",{
       email : login.email,
       password : login.password,
     }).then((resp)=>{
       setLogin({...login, loading: true, err: ""})
-      setAuthUser(resp.data);
+      setAuthUser(resp.data.data);
       Navigate("/");
 
     }).catch((errors) => {
-      setLogin({...login, loading: false, err: errors.response.data.msg, });
+      setLogin({...login, loading: false, err: errors.response.data.error.message, });
     });
   };
 
@@ -153,7 +153,7 @@ const Login = () => {
         
    {(login.err!== null)?<div class="p-4 mb-4 text-lg font-semibold text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
           {login.err}
-        </div>:""}
+        </div>:login.err}
               
 					<form onSubmit={LoginFun} class="px-8 pt-6 pb-8 mb-4 bg-white dark:bg-gray-800 rounded">
 						<div class="mb-4 md:flex md:justify-between">		
