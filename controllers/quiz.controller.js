@@ -13,8 +13,9 @@ const createQuiz = asyncWrapper(async (req, res, next) => {
     const lessonId = req.params.lessonId;
     const lesson = await Lesson.findById(lessonId)
     if (!lesson) {
-        const error = appError.create('lesson not found', 404, httpStatusText.FAIL)
-        return next(error)
+        const error = appError.create('lesson not found', 400, httpStatusText.FAIL)
+        // return next(error)
+        return res.status(400).json({error})
     }
 
     const lessonName = lesson.name
@@ -24,8 +25,9 @@ const createQuiz = asyncWrapper(async (req, res, next) => {
     
     const process = spwaner('python',['machine/Quiz_data.py',pdfPath])
     if(process.status==1){
-        const error = appError.create("Error in generating the quiz", 404, httpStatusText.FAIL)
-        return next(error)
+        const error = appError.create("Error in generating the quiz", 400, httpStatusText.FAIL)
+        // return next(error)
+        return res.status(400).json({error})
     }
     else {
         output =process.stdout.toString()
@@ -60,7 +62,8 @@ const deleteQuiz = asyncWrapper(async (req, res, next) => {
     const quiz = await Quiz.findById(quizId);
     if (!quiz) {
         const error = appError.create('quiz not found', 404, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
     else {
         await Quiz.deleteOne({ _id: quizId })
@@ -79,7 +82,8 @@ const retrieveQuiz = asyncWrapper(async (req, res, next) => {
     const quiz = await Quiz.findById(req.params.id)
     if (!quiz) {
         const error = appError.create('quiz not found', 404, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
     else
         return res.json({ status: httpStatusText.SUCCESS, data: { quiz } })

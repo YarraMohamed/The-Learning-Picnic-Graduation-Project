@@ -13,14 +13,16 @@ const uploadLesson = asyncWrapper(async (req, res, next) => {
 
     if (!name || !req.file) {
         const error = appError.create("name and pdf file reuired", 400, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
 
     const pdfFile = req.file.originalname;
     const existingPdf = await Lesson.findOne({ pdfFile });
     if(existingPdf){
         const error = appError.create("Lesson already uploaded", 400, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
 
     const newLesson = new Lesson (
@@ -38,7 +40,8 @@ const uploadLesson = asyncWrapper(async (req, res, next) => {
     const process = spwaner('python',['machine/Summary.py',pdfPath])
     if(process.status==1){
         const error = appError.create("Error in generating the summary", 404, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
     else {
         output =process.stdout.toString()
@@ -54,7 +57,7 @@ const uploadLesson = asyncWrapper(async (req, res, next) => {
 
 const retrieveLessons = asyncWrapper(async (req, res, next) => {
     const lesson = await Lesson.find()
-    res.json({ status: httpStatusText.SUCCESS, data: { lesson } })
+    res.json({ status: httpStatusText.SUCCESS, data: {lesson} })
 
 });
 
@@ -62,7 +65,8 @@ const retrieveLesson = asyncWrapper(async (req, res, next) => {
     const lesson = await Lesson.findById(req.params.id)
     if (!lesson) {
         const error = appError.create('lesson not found', 404, httpStatusText.FAIL)
-        return next(error)
+          // return next(error)
+          return res.status(400).json({error})
     }
     else
         return res.json({ status: httpStatusText.SUCCESS, data: { lesson } })
@@ -82,7 +86,8 @@ const deleteLesson = (asyncWrapper(async (req, res, next) => {
     const lesson = await Lesson.findById(req.params.id)
     if (!lesson) {
         const error = appError.create('lesson not found', 404, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
     else {
         await Lesson.deleteOne({ _id: req.params.id })
@@ -114,7 +119,8 @@ const updateLesson = asyncWrapper(async (req, res, next) => {
 
     if (!lesson) {
         const error = appError.create('Lesson not found', 404, httpStatusText.FAIL);
-        return next(error);
+         // return next(error)
+         return res.status(400).json({error})
     }
 
     const { name } = req.body;
@@ -136,7 +142,8 @@ const downloadLesson = asyncWrapper(async (req,res,next) => {
     const lesson = await Lesson.findById(req.params.id)
     if (!lesson) {
         const error = appError.create('lesson not found', 404, httpStatusText.FAIL)
-        return next(error)
+         // return next(error)
+         return res.status(400).json({error})
     }
 
     const filePath = path.join(__dirname, '../uploads', lesson.pdfFile);
@@ -145,7 +152,8 @@ const downloadLesson = asyncWrapper(async (req,res,next) => {
         // Check if the file exists
         if (!fs.existsSync(filePath)) {
             const error = appError.create('pdf file not found', 404, httpStatusText.FAIL)
-            return next(error)
+           // return next(error)
+        return res.status(400).json({error})
         }
 
         res.setHeader('Content-Type', 'application/pdf');

@@ -13,12 +13,14 @@ const sumbitUserAnswers = asyncWrapper( async(req,res,next) => {
     const check = await userAnswers.findOne({ userId:userId , quizId:quizId });
     if(check){
         const error = appError.create("You already have taken this quiz", 400, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
 
     if(!answers){
         const error = appError.create("You must fill the answers", 400, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
 
     }
 

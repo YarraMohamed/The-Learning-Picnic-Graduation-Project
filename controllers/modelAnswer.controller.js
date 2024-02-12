@@ -9,8 +9,9 @@ const deleteModelAnswer = asyncWrapper(async (req, res, next) => {
     const modelAnswerId = req.params.modelAnswerId;
     const modelAnswer = await ModelAnswer.findById(modelAnswerId);
     if (!modelAnswer) {
-        const error = appError.create('quiz not found', 404, httpStatusText.FAIL)
-        return next(error)
+        const error = appError.create('quiz not found', 400, httpStatusText.FAIL)
+        // return next(error)
+        return res.status(400).json({error})
     }
     else {
         await ModelAnswer.deleteOne({ _id: modelAnswerId })
@@ -24,20 +25,23 @@ const getModelAnswer = asyncWrapper(async (req, res, next) => {
     const quiz = await Quiz.findById(quizId)
     if (!quiz) {
         const error = appError.create('quiz not found', 400, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
 
     const userId = req.currentUser.id;
     const isQuizAnswered = await userAnswers.findOne({userId : userId})
     if(!isQuizAnswered){
         const error = appError.create('You should take the quiz first', 400, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
     
     const modelAnswer = await ModelAnswer.find({ quizId: quizId })
     if (!modelAnswer) {
         const error = appError.create('no model answer found for this quiz', 400, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
     res.status(200).json({ status: httpStatusText.SUCCESS, data: { modelAnswer: modelAnswer } });
 
