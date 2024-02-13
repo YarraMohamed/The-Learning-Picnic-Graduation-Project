@@ -16,7 +16,7 @@ const ShowLessonsTeacher = () => {
 
   const loadLessons = () => {
     setLessons({ ...lessons, loading: true });
-    axios.get("http://localhost:2222/lessons/", {
+    axios.get(`${process.env.REACT_APP_API_URL}/lessons/`, {
       headers: {
         Authorization: `Bearer ${Auth.token}`
       }

@@ -8,28 +8,30 @@ import { getAuthUser } from "../../../helper/Storage.js";
 const ShowLessonsStudent = () => {
 
   const Auth = getAuthUser();
-  
+
   const [lessons,setLessons] = useState({
     loading : true,
     results : [],
-    err : null,
-    reload : 0
+    err : null
   })
 
-  useEffect ( ()=>{
-    setLessons({...lessons,loading:true})
-    axios.get("http://localhost:2222/lessons/",{
-      headers : {
-        Authorization :`Bearer ${Auth.token}`
+  const loadLessons = () => {
+    setLessons({ ...lessons, loading: true });
+    axios.get(`${process.env.REACT_APP_API_URL}/lessons/`, {
+      headers: {
+        Authorization: `Bearer ${Auth.token}`
       }
     })
-    .then(resp => {
-      setLessons({...lessons, results : resp.data.data.lesson, loading:false})
-    }).catch(err => {
-      setLessons({...lessons,loading:false, err: err.data.data.msg})
+      .then(resp => {
+        setLessons({ ...lessons, results: resp.data.data.lesson, loading: false });
+      })
+      .catch(err => {
+        setLessons({ ...lessons, loading: false, err: err.data.data.msg });
+      });
+  };
 
-    })
-
+   useEffect ( ()=>{
+    loadLessons();
   }, [])
   
   return (

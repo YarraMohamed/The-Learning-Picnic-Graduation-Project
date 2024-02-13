@@ -23,7 +23,7 @@ const Login = () => {
   const LoginFun = (e)=>{
     e.preventDefault();
     setLogin({...login, loading:true})
-    axios.post("http://localhost:2222/users/login",{
+    axios.post(`${process.env.REACT_APP_API_URL}/users/login`,{
       email : login.email,
       password : login.password,
     }).then((resp)=>{

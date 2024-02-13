@@ -21,7 +21,7 @@ const RegisterFun = (e)=>{
     e.preventDefault();
     console.log(register);
     setRegister({...register,loading:true})
-  axios.post("http://localhost:2222/users/register", {
+  axios.post(`${process.env.REACT_APP_API_URL}/users/register`, {
       firstName: register.firstName,
       lastName: register.lastName,
       email : register.email,
