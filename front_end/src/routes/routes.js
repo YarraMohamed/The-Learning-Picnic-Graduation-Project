@@ -37,11 +37,16 @@ export const routes = createBrowserRouter([
         },
         {
             path: '/Lessons',
-            element: <ShowLessons/>
-        },
-        {
-            path: '/Summarization',
-            element: <Summarization/>
+            children : [
+                {
+                    path : "",
+                    element : <ShowLessons/>
+                },
+                {
+                    path : ':id',
+                    element : <Summarization/>
+                }
+            ]
         },
         {
             path: '/addition',
@@ -59,10 +64,10 @@ export const routes = createBrowserRouter([
             path: "/reports",
             element: <ShowReports/>
         },
-        {
-            path: ":id",
-            element: <Questions/>,
-        },
+        // {
+        //     path: ":id",
+        //     element: <Questions/>,
+        // },
     ]
   }
 ]);

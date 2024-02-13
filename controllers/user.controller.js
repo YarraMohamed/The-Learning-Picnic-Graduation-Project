@@ -12,7 +12,8 @@ const register = asyncWrapper(async (req, res, next) => {
     const oldUser = await User.findOne({ $or: [{ email: email }, { phone: phone }] });
     if (oldUser) {
         const error = appError.create("User already exists", 400, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User(
@@ -38,23 +39,26 @@ const login = asyncWrapper(async (req, res, next) => {
     const { email, password } = req.body;
     if (!email || !password) {
         const error = appError.create("email and password are required", 400, httpStatusText.FAIL)
-        next(error);
+        // next(error);
+        return res.status(400).json({error})
     }
     const user = await User.findOne({ email: email });
     if (!user) {
         const error = appError.create("user not found", 400, httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
     const matchedPassword = await bcrypt.compare(password, user.password)
     if (user && matchedPassword) {
         const token = await generateJWT({ email: user.email, id: user._id, role: user.role })
-        res.status(200).json({ status: httpStatusText.SUCCESS, data: { token } })
+        res.status(200).json({ status: httpStatusText.SUCCESS, data: { token : token , role : user.role } })
         //blacklist.removeTokenFromBlacklist(token)
 
     }
     else {
-        const error = appError.create("something wroung", 500, httpStatusText.ERROR)
-        return next(error)
+        const error = appError.create("something wrong", 500, httpStatusText.ERROR)
+        // return next(error)
+        return res.status(400).json({error})
     }
 });
 
@@ -67,7 +71,8 @@ const viewAccount = asyncWrapper(async (req,res,next)=> {
         )
     if(!user){
         const error = appError.create("No user found",400,httpStatusText.FAIL)
-        return next(error)
+        // return next(error)
+        return res.status(400).json({error})
     }
     else {
         res.status(200).json({status : httpStatusText.SUCCESS ,data : user})
