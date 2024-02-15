@@ -48,7 +48,7 @@ const ShowLessonsStudent = () => {
       <div className="row-auto">
         <div class="gridContainer grid grid-cols-6 gap-4">
         {lessons.results.map(lesson => (
-              <LessonCardStudent key={lesson._id} name={lesson.name} _id={lesson._id} />
+              <LessonCardStudent key={lesson._id} name={lesson.name} pdfFile={lesson.pdfFile} _id={lesson._id} />
             ))}
           </div>
         </div>          
