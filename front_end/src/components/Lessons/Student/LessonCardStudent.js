@@ -3,6 +3,7 @@ import '../../../pages/style/CardStudent.css'
 import studytime from '../../../assets/study-time.png'
 import axios from "axios";
 import { getAuthUser } from "../../../helper/Storage.js";
+import {saveAs} from 'file-saver'
 
 
 const LessonCardStudent = (props) => {
@@ -21,9 +22,8 @@ const LessonCardStudent = (props) => {
       const pdfBlob = new Blob([resp.data], { type: 'application/pdf' });
       const pdfUrl = URL.createObjectURL(pdfBlob);
       window.open(pdfUrl, '_blank');
-    })
-    .catch((err) => {
-      console.log(err)
+      saveAs(pdfBlob, pdfFile);
+
     })
   }
 
