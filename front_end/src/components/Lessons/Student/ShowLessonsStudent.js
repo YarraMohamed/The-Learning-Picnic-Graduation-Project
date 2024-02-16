@@ -1,6 +1,6 @@
 import React ,{useState , useEffect} from "react";
-import LessonCardStudent from './LessonCardStudent'
-import '../../../pages/style/ShowLessonCardStudent.css'
+import LessonCardStudent from './LessonCardStudent';
+import '../../../pages/style/ShowLessonCardStudent.css';
 import axios from "axios";
 import { Spinner } from "@material-tailwind/react";
 import { getAuthUser } from "../../../helper/Storage.js";
@@ -35,7 +35,6 @@ const ShowLessonsStudent = () => {
   }, [])
   
   return (
-
     <div className="homeContainer">
 
        {lessons.loading === true && (
@@ -48,7 +47,7 @@ const ShowLessonsStudent = () => {
       <div className="row-auto">
         <div class="gridContainer grid grid-cols-6 gap-4">
         {lessons.results.map(lesson => (
-              <LessonCardStudent key={lesson._id} name={lesson.name} _id={lesson._id} />
+              <LessonCardStudent key={lesson._id} name={lesson.name} pdfFile={lesson.pdfFile} _id={lesson._id} />
             ))}
           </div>
         </div>          

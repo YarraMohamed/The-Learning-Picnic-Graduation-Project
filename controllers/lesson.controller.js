@@ -4,55 +4,52 @@ const httpStatusText = require("../utils/httpStatusText")
 const appError = require("../utils/appError")
 const path = require("path")
 const fs = require("fs")
-const spwaner = require("child_process").spawnSync;
-
+const { spawn } = require('child_process');
 
 const uploadLesson = asyncWrapper(async (req, res, next) => {
-
     const { name } = req.body;
 
     if (!name || !req.file) {
-        const error = appError.create("name and pdf file reuired", 400, httpStatusText.FAIL)
-        // return next(error)
-        return res.status(400).json({error})
+        const error = appError.create("name and pdf file required", 400, httpStatusText.FAIL);
+        return res.status(400).json({ error });
     }
 
     const pdfFile = req.file.originalname;
     const existingPdf = await Lesson.findOne({ pdfFile });
-    if(existingPdf){
-        const error = appError.create("Lesson already uploaded", 400, httpStatusText.FAIL)
-        // return next(error)
-        return res.status(400).json({error})
+    if (existingPdf) {
+        const error = appError.create("Lesson already uploaded", 400, httpStatusText.FAIL);
+        return res.status(400).json({ error });
     }
 
-    const newLesson = new Lesson (
-        {
-            name,
-            pdfFile: pdfFile
+    const newLesson = new Lesson({
+        name,
+        pdfFile: pdfFile
+    });
 
-        } 
-    )
+    await newLesson.save();
 
-    await newLesson.save()
     const lesson = await Lesson.findById(newLesson._id.toString());
     const pdfPath = path.join(path.join(__dirname, '../uploads'), lesson.pdfFile);
+    
+    const pythonProcess = spawn('python', ['machine/Summary.py', pdfPath]);
 
-    const process = spwaner('python',['machine/Summary.py',pdfPath])
-    if(process.status==1){
-        const error = appError.create("Error in generating the summary", 404, httpStatusText.FAIL)
-        // return next(error)
-        return res.status(400).json({error})
-    }
-    else {
-        output =process.stdout.toString()
-        summary = output
-    }
-    if(summary){
-        lesson.summary = summary
-    }
-    await lesson.save();
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: { lesson: newLesson } })
+    pythonProcess.stdout.on('data', (data) => {
+        const summary = data.toString(); // Assuming summary comes as stdout from the Python script
+        lesson.summary = summary;
+        lesson.save().then(() => {
+            res.status(200).json({ status: httpStatusText.SUCCESS, data: { lesson: newLesson } });
+        }).catch((error) => {
+            console.error("Error saving lesson with summary:", error);
+            const errorResponse = appError.create("Error saving lesson with summary", 500, httpStatusText.FAIL);
+            res.status(500).json({ error: errorResponse });
+        });
+    });
 
+    pythonProcess.stderr.on('data', (data) => {
+        console.error(`Error from Python script: ${data}`);
+        const error = appError.create("Error in generating the summary", 404, httpStatusText.FAIL);
+        res.status(404).json({ error });
+    });
 });
 
 const retrieveLessons = asyncWrapper(async (req, res, next) => {
@@ -171,5 +168,5 @@ module.exports =
     retrieveLesson,
     deleteLesson,
     updateLesson,
-    downloadLesson
+    downloadLesson,
 }

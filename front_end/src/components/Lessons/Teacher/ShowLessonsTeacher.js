@@ -48,7 +48,7 @@ const ShowLessonsTeacher = () => {
       <div className="row-auto">
         <div class="gridContainer grid grid-cols-6 gap-4">
         {lessons.results.map(lesson => (
-              <LessonCardTeacher key={lesson._id} name={lesson.name} _id={lesson._id} onDelete={handleLessonDelete}/>
+              <LessonCardTeacher key={lesson._id} name={lesson.name} _id={lesson._id} pdfFile={lesson.pdfFile} onDelete={handleLessonDelete}/>
             ))}
         </div>
         <a href="/addition">

@@ -38,6 +38,19 @@ Learning Picnic stands at the intersection of technology and education, With its
 The project is mainly for science subject in the fourth grade of primary school, but it can be used for all educational levels and its designed for materials in English only.
 
 # NLP
+# Summarization Task:
+- Model : [pszemraj/led-large-book-summary](https://huggingface.co/pszemraj/led-large-book-summary)
+- Description: This model utilizes the Longformer encoder-decoder architecture for summarization. It is fine-tuned on the bookSum dataset, making it suitable for generating summaries of books.
+
+
+# Quizzes Task:
+Models :
+- Question and Answer Generation Model : [potsawee/t5-large-generation-squad-QuestionAnswer](https://huggingface.co/potsawee/t5-large-generation-squad-QuestionAnswer).
+- Distractor Generation Model : [potsawee/t5-large-generation-race-Distractor](https://huggingface.co/potsawee/t5-large-generation-race-Distractor).
+- Description: The T5 model is employed for generating both questions and answers in the context of quizzes. The first model generates questions and answers, while the second model produces distractors (wrong 
+  answers) based on the generated questions and answers.
+
+Kindly refer to our comprehensive documentation for in-depth information. Explore the detailed documentation to gain a deeper understanding of the subject matter.
 
 # Project Demo
 
