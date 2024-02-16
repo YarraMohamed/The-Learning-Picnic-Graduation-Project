@@ -6,7 +6,7 @@ import ShowLessonsTeacher from './Teacher/ShowLessonsTeacher'
 
 const ShowLessons = () => {
 
-    const [loggedIn, setLoggedIn] = useState(true)
+    const [loggedIn, setLoggedIn] = useState(false)
     if (loggedIn) {
         return (
             <ShowLessonsTeacher/>
