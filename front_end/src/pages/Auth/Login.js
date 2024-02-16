@@ -153,7 +153,7 @@ const Login = () => {
         
    {(login.err!== null)?<div class="p-4 mb-4 text-lg font-semibold text-red-800 rounded-lg bg-red-50 dark:bg-gray-800 dark:text-red-400" role="alert">
           {login.err}
-        </div>:login.err}
+        </div>:""}
               
 					<form onSubmit={LoginFun} class="px-8 pt-6 pb-8 mb-4 bg-white dark:bg-gray-800 rounded">
 						<div class="mb-4 md:flex md:justify-between">		

@@ -1,6 +1,6 @@
 import React ,{useState , useEffect} from "react";
-import LessonCardStudent from './LessonCardStudent'
-import '../../../pages/style/ShowLessonCardStudent.css'
+import LessonCardStudent from './LessonCardStudent';
+import '../../../pages/style/ShowLessonCardStudent.css';
 import axios from "axios";
 import { Spinner } from "@material-tailwind/react";
 import { getAuthUser } from "../../../helper/Storage.js";
@@ -35,7 +35,6 @@ const ShowLessonsStudent = () => {
   }, [])
   
   return (
-
     <div className="homeContainer">
 
        {lessons.loading === true && (

@@ -1,4 +1,4 @@
-import { useRouteError } from "react-router-dom";
+import { Link, useRouteError } from "react-router-dom";
 import React from 'react'
 import '../style/Error.css'
 
@@ -13,10 +13,10 @@ const Error = () => {
 				<h1>404</h1>
 				<h2>Page not found</h2>
 			</div>
-			<a href="/">Homepage</a>
+			  <Link className="homePageButton" to={"/"}>Homepage</Link>
 		</div>
 	</div>
   );
 }
 
-export default Error
+export default Error;

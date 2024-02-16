@@ -19,4 +19,4 @@ const ShowLessons = () => {
     }
 }
 
-export default ShowLessons
+export default ShowLessons;

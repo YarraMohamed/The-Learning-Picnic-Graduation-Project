@@ -64,10 +64,10 @@ export const routes = createBrowserRouter([
             path: "/reports",
             element: <ShowReports/>
         },
-        // {
-        //     path: ":id",
-        //     element: <Questions/>,
-        // },
+        {
+            path: ":id",
+            element: <Questions/>,
+        },
     ]
   }
 ]);
