@@ -5,7 +5,7 @@ import ShowTeacherQuiz from './Teacher/ShowTeacherQuiz'
 
 const ShowQuiz = () => {
   
-      const [loggedIn, setLoggedIn] = useState(false)
+      const [loggedIn, setLoggedIn] = useState(true)
     if (loggedIn) {
         return (
             <ShowTeacherQuiz/>
