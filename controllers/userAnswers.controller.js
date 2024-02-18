@@ -1,26 +1,36 @@
 const userAnswers = require("../models/userAnswers.model");
-const modelAnswer = require ("../models/modelAnswer.model");
+const modelAnswer = require("../models/modelAnswer.model");
 const quizResult = require("../models/quizResult.model");
 const asyncWrapper = require("../middleware/asyncWrapper");
 const httpStatusText = require("../utils/httpStatusText");
 const appError = require("../utils/appError");
+const Quiz = require("../models/quiz.model")
 
-const sumbitUserAnswers = asyncWrapper( async(req,res,next) => {
+const sumbitUserAnswers = asyncWrapper(async (req, res, next) => {
     const quizId = req.params.id;
     const userId = req.currentUser.id;
     const { answers } = req.body;
 
-    const check = await userAnswers.findOne({ userId:userId , quizId:quizId });
-    if(check){
-        const error = appError.create("You already have taken this quiz", 400, httpStatusText.FAIL)
-        // return next(error)
-        return res.status(400).json({error})
+    const quiz = await Quiz.findById(quizId);
+    if (!quiz) {
+        return res.status(404).json({ status: httpStatusText.FAIL, data: 'Quiz not found' });
     }
 
-    if(!answers){
+    if (quiz.deadline && new Date() > new Date(quiz.deadline)) {
+        return res.status(400).json({ status: httpStatusText.FAIL, data: 'Quiz deadline has passed' });
+    }
+
+    const check = await userAnswers.findOne({ userId: userId, quizId: quizId });
+    if (check) {
+        const error = appError.create("You already have taken this quiz", 400, httpStatusText.FAIL)
+        // return next(error)
+        return res.status(400).json({ error })
+    }
+
+    if (!answers) {
         const error = appError.create("You must fill the answers", 400, httpStatusText.FAIL)
         // return next(error)
-        return res.status(400).json({error})
+        return res.status(400).json({ error })
 
     }
 
@@ -31,7 +41,11 @@ const sumbitUserAnswers = asyncWrapper( async(req,res,next) => {
     })
     await newUserAnswers.save();
 
-    const correctAnswer = await modelAnswer.findOne({quizId: quizId});
+    const correctAnswer = await modelAnswer.findOne({ quizId: quizId });
+    if (!correctAnswer) {
+        return res.status(400).json({ status: httpStatusText.FAIL, data: 'The model asnwer not submited yet' });
+
+    }
     const numberOfQuestiosn = correctAnswer.answers.length;
     let correctAnswers = 0;
     for (let j = 0; j < numberOfQuestiosn; j++) {
@@ -49,20 +63,20 @@ const sumbitUserAnswers = asyncWrapper( async(req,res,next) => {
     ]
 
     const existingUser = await quizResult.findOne({ userId: userId });
-    if(existingUser){
+    if (existingUser) {
         existingUser.quizGrades.push({ quizId: quizId, score: grade + "%" });
         await existingUser.save()
     } else {
-        const newQuizResult = new quizResult (
+        const newQuizResult = new quizResult(
             {
-                userId : userId,
-                quizGrades : quizGrades
+                userId: userId,
+                quizGrades: quizGrades
             }
         )
-        await newQuizResult.save()  
+        await newQuizResult.save()
     }
-    
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: {Score: grade} });
+
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: { Score: grade } });
 });
 
 
@@ -83,7 +97,7 @@ const sumbitUserAnswers = asyncWrapper( async(req,res,next) => {
 // })
 
 
-module.exports ={
+module.exports = {
     sumbitUserAnswers,
     // getQuizAnswers
 } 

@@ -7,7 +7,7 @@ const asyncWrapper = require("../middleware/asyncWrapper")
 const httpStatusText = require("../utils/httpStatusText")
 const appError = require("../utils/appError")
 const spwaner = require("child_process").spawnSync;
- 
+
 
 const createQuiz = asyncWrapper(async (req, res, next) => {
     const lessonId = req.params.lessonId;
@@ -15,46 +15,50 @@ const createQuiz = asyncWrapper(async (req, res, next) => {
     if (!lesson) {
         const error = appError.create('lesson not found', 400, httpStatusText.FAIL)
         // return next(error)
-        return res.status(400).json({error})
+        return res.status(400).json({ error })
     }
 
     const lessonName = lesson.name
     const lessonfile = lesson.pdfFile
 
     const pdfPath = path.join(path.join(__dirname, '../uploads'), lessonfile);
-    
-    const process = spwaner('python',['machine/Quiz_data.py',pdfPath])
-    if(process.status==1){
+
+    const process = spwaner('python', ['machine/Quiz_data.py', pdfPath])
+    if (process.status == 1) {
         const error = appError.create("Error in generating the quiz", 400, httpStatusText.FAIL)
         // return next(error)
-        return res.status(400).json({error})
+        return res.status(400).json({ error })
     }
     else {
-        output =process.stdout.toString()
-         prints = output.split('\n');
-         questions_data = prints[0];
-         answers_data = prints[1];
-         questions = JSON.parse(questions_data)
-         answers = JSON.parse(answers_data)
+        output = process.stdout.toString()
+        prints = output.split('\n');
+        questions_data = prints[0];
+        answers_data = prints[1];
+        questions = JSON.parse(questions_data)
+        answers = JSON.parse(answers_data)
     }
+
+    const deadline = new Date();
+    deadline.setDate(deadline.getDate() + 7);
 
     const newQuiz = new Quiz({
         lessonName: lessonName,
         lessonId: lessonId,
+        deadline: deadline,
         questions: questions
     })
     await newQuiz.save();
 
     const newModelAnswer = new ModelAnswer(
-    {
-            quizId:  newQuiz._id.toString(),
+        {
+            quizId: newQuiz._id.toString(),
             answers: answers
 
-    })
+        })
     await newModelAnswer.save();
 
-    res.status(200).json({ status: httpStatusText.SUCCESS, data: { quiz : newQuiz , modelAnswer: newModelAnswer  } });
-    
+    res.status(200).json({ status: httpStatusText.SUCCESS, data: { quiz: newQuiz, modelAnswer: newModelAnswer } });
+
 });
 
 const deleteQuiz = asyncWrapper(async (req, res, next) => {
@@ -63,15 +67,15 @@ const deleteQuiz = asyncWrapper(async (req, res, next) => {
     if (!quiz) {
         const error = appError.create('quiz not found', 404, httpStatusText.FAIL)
         // return next(error)
-        return res.status(400).json({error})
+        return res.status(400).json({ error })
     }
     else {
         await Quiz.deleteOne({ _id: quizId })
-        await ModelAnswer.deleteOne({ quizId : quizId })
-        await userAnswers.deleteMany({quizId:quizId})
+        await ModelAnswer.deleteOne({ quizId: quizId })
+        await userAnswers.deleteMany({ quizId: quizId })
         await quizResult.updateMany(
-            {'quizGrades.quizId' : quizId},
-            {$pull:{quizGrades : {quizId : quizId }}}
+            { 'quizGrades.quizId': quizId },
+            { $pull: { quizGrades: { quizId: quizId } } }
         )
         return res.json({ status: httpStatusText.SUCCESS, data: null })
 
@@ -83,7 +87,7 @@ const retrieveQuiz = asyncWrapper(async (req, res, next) => {
     if (!quiz) {
         const error = appError.create('quiz not found', 404, httpStatusText.FAIL)
         // return next(error)
-        return res.status(400).json({error})
+        return res.status(400).json({ error })
     }
     else
         return res.json({ status: httpStatusText.SUCCESS, data: { quiz } })
