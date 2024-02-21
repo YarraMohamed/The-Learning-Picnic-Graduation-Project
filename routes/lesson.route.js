@@ -49,10 +49,6 @@ router.route("/:id")
     .delete(verifyToken,allowedTo(userRoles.TEACHER),lessonController.deleteLesson)
     .put(allowedTo(userRoles.TEACHER),upload.single('pdfFile'), lessonController.updateLesson)
 
-router.route("/download/:id")
-      .get( verifyToken, lessonController.downloadLesson) 
-
-
 
 
 
