@@ -5,6 +5,8 @@ const appError = require("../utils/appError")
 const bcrypt = require("bcryptjs")
 const generateJWT = require("../utils/generateJWT")
 const userRoles = require("../utils/userRoles")
+const userAnswers = require("../models/userAnswers.model")
+const quizResults = require("../models/quizResult.model")
 
 const register = asyncWrapper(async (req, res, next) => {
     const { firstName, lastName, email, phone, password, role } = req.body
@@ -104,11 +106,13 @@ const deleteUser = asyncWrapper(async(req,res,next)=>{
     if(!user){
         const error = appError.create("No user found",400,httpStatusText.FAIL)
         return res.status(error.statusCode).json({error})
-    }
-
-    await User.deleteOne({_id:req.params.id})
+    } else {
+        await User.deleteOne({_id:req.params.id})
+        await userAnswers.deleteOne({userId : req.params.id})
+        await quizResults.deleteOne({userId : req.params.id})
      res.json({ status: httpStatusText.SUCCESS, data: null })
 
+    }
 });
 
 const updateUser = asyncWrapper(async(req,res,next)=>{
