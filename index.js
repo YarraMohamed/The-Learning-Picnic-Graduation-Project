@@ -26,12 +26,14 @@ const lessonRouter = require("./routes/lesson.route")
 const quizRouter = require("./routes/quiz.route")
 const modelRouter = require("./routes/modelAnswer.route")
 const AnswersRouter = require("./routes/userAnswers.route")
+const reportRouter = require("./routes/reports.route")
 
 app.use("/users", userRoute)
 app.use("/lessons", lessonRouter)
 app.use("/quizes", quizRouter)
 app.use("/modelAnswer", modelRouter)
 app.use("/Answers",AnswersRouter)
+app.use("/report",reportRouter)
 
 
 app.all('*', (req, res) => {
