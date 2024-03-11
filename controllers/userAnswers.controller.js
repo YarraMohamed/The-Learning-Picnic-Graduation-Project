@@ -22,12 +22,12 @@ const submitUserAnswers = asyncWrapper( async(req,res,next) => {
         return res.status(400).json({ status: httpStatusText.FAIL, data: 'Quiz deadline has passed' });
     }
 
-    // const check = await userAnswers.findOne({ userId:userId , quizId:quizId });
-    // if(check){
+    const check = await userAnswers.findOne({ userId:userId , quizId:quizId });
+    if(check){
 
-    //     const error = appError.create("You already have taken this quiz", 400, httpStatusText.FAIL)
-    //     return res.status(error.statusCode).json({error})
-    // }
+        const error = appError.create("You already have taken this quiz", 400, httpStatusText.FAIL)
+        return res.status(error.statusCode).json({error})
+    }
 
     const newUserAnswers = new userAnswers({
         userId: userId,
