@@ -1,5 +1,6 @@
 .quizBody{
-    background: #001e4d;
+    background-color: #FFFFFF;
+    background-image: linear-gradient(110deg, #FFFFFF 10%, #62cfff 28%, #1c00ff 100%);
     width: 100%;
         min-height: 84.6vh;
         display: flex;
@@ -59,7 +60,8 @@
     cursor: no-drop;
 }
 
-#next-btn {
+#next-btn,
+#quizzes-btn {
     background: #001e4d;
     color: #fff;
     font-weight: 500;
@@ -81,7 +83,7 @@
 }
 
 @media (max-width: 480px){
-    #next-btn {
+    #next-btn, #quizzes-btn {
         padding: 8px;
         width: 90px;
         margin: 20px auto;
