@@ -6,9 +6,6 @@ import '../../style/Reports.css'
 const TeacherReport = () => {
 
   const Auth = getAuthUser();
-
-  console.log(Auth)
-
   const [report, setReport] = useState({
     loading: true,
     results: [],
