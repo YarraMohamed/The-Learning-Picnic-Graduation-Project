@@ -36,7 +36,7 @@ const TeacherQuizCard = (props) => {
           <img src={quiztime} height={50} alt="" className='mx-auto'/>
           <h3 class="mb-1 text-2xl font-bold tracking-tight text-cyan-800 dark:text-cyan-800">{props.lessonName} Quiz</h3>
 
-          <div className="row-auto">
+          <div className="row-auto flex">
             
              <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-base px-5 py-2.5 me-1 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" onClick={(e)=>{deleteQuiz(props._id)}} >Delete</button>
           

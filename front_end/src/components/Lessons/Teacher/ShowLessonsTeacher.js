@@ -38,7 +38,7 @@ const ShowLessonsTeacher = () => {
   };
 
   return (
-    <div className="homeContainer">  
+    <div className="homeContainer p-3">  
 
 <form class="flex items-center max-w-sm mx-auto my-2">   
         <div class="relative w-full">
