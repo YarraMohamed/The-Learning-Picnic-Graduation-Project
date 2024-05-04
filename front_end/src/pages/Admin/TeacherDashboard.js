@@ -20,7 +20,7 @@ const TeacherDashboard = () => {
     setTeachers(prevTeachers => ({ ...prevTeachers, loading: true }));
     axios.get(`${process.env.REACT_APP_API_URL}/users`, {
       headers: {
-        Authorization: `Bearer ${Auth.data.token}`,
+        Authorization: `Bearer ${Auth.token}`,
       },
       params: {
         role: "teacher"
@@ -39,7 +39,7 @@ const TeacherDashboard = () => {
   const deleteUser = (id) => {
      axios.delete(`${process.env.REACT_APP_API_URL}/users/`+ id, {
       headers: {
-        Authorization: `Bearer ${Auth.data.token}`,
+        Authorization: `Bearer ${Auth.token}`,
       }
     })
       .then((res) => {

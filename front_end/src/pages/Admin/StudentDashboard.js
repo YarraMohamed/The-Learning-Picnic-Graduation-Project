@@ -22,7 +22,7 @@ const StudentDashboard = () => {
     setStudents(prevStudents => ({ ...prevStudents, loading: true }));
     axios.get(`${process.env.REACT_APP_API_URL}/users`, {
       headers: {
-        Authorization: `Bearer ${Auth.data.token}`,
+        Authorization: `Bearer ${Auth.token}`,
       },
       params: {
         role: "student",
@@ -42,7 +42,7 @@ const StudentDashboard = () => {
 const deleteUser = (id) => {
      axios.delete(`${process.env.REACT_APP_API_URL}/users/`+ id, {
       headers: {
-        Authorization: `Bearer ${Auth.data.token}`,
+        Authorization: `Bearer ${Auth.token}`,
       }
     })
       .then((res) => {

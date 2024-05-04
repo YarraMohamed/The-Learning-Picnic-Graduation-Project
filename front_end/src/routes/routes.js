@@ -62,13 +62,16 @@ export const routes = createBrowserRouter([
             element: <TeacherDashboard/>
         },
         {
-            path: "/parent",
-            element: <ParentDashboard />,
-            children: [
+            path: '/parent',
+            children : [
                 {
-            path: ":addChild",
-            element: <AddChild/>
-        },
+                    path : "",
+                    element : <ParentDashboard/>
+                },
+                {
+                    path : ':id',
+                    element : <AddChild/>
+                }
             ]
         },
         {

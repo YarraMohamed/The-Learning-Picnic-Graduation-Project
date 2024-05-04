@@ -35,7 +35,7 @@ const UpdateDashboard = () => {
 
     axios.put(`${process.env.REACT_APP_API_URL}/users/` + updateId, formData,{
         headers: {
-        Authorization: `Bearer ${Auth.data.token}`,
+        Authorization: `Bearer ${Auth.token}`,
         "Content-Type": "application/json",
       },
       })
@@ -60,7 +60,7 @@ const UpdateDashboard = () => {
    useEffect(() => {
      axios.get(`${process.env.REACT_APP_API_URL}/users/` + updateId, {
        headers: {
-         Authorization: `Bearer ${Auth.data.token}`,
+         Authorization: `Bearer ${Auth.token}`,
        }
      })
        .then((resp) => {
