@@ -162,6 +162,21 @@ const addChildEmail = asyncWrapper(async(req,res,next)=>{
     res.json({ status: httpStatusText.SUCCESS, data: { childernEmails : childernEmails } });
 });
 
+const uploadImage = asyncWrapper(async (req, res, next) => {
+    const userId = req.currentUser.id;
+    if (!req.file) {
+        const error = appError.create("image reuqired", 400, httpStatusText.FAIL)
+        return next(error)
+    }
+
+    const user = await User.findById(userId);
+    const imageFile = req.file.originalname;
+    user.profileImage = imageFile;
+    await user.save();
+
+    res.json({ status: httpStatusText.SUCCESS, data: { user } });
+})
+
 /* const logout = (req, res,) => {
     // const token = req.headers['Authorization'] || req.headers['authorization'] 
     const authHeader = req.headers['Authorization'] || req.headers['authorization']
@@ -184,6 +199,7 @@ module.exports = {
     getAllUser,
     deleteUser,
     updateUser,
-    addChildEmail
+    addChildEmail,
+    uploadImage
     //logout
 }

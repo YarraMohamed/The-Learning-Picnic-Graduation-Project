@@ -17,6 +17,7 @@ import TeacherDashboard from "../pages/Admin/TeacherDashboard";
 import ParentDashboard from "../pages/Admin/ParentDashboard";
 import StudentDashboard from "../pages/Admin/StudentDashboard";
 import AddChild from "../pages/Admin/DashboardFunctions/AddChild";
+import ModelAnswer from "../pages/ModelAnswer/ModelAnswer";
 import UpdateDashboard from "../pages/Admin/DashboardFunctions/UpdateDashboard";
 import Guest from "../middleware/Guest";
 import Admin from "../middleware/Admin";
@@ -47,36 +48,39 @@ export const routes = createBrowserRouter([
     
         },
 
-        // Admin Middleware
-        {
+         // ADMIN MIDDLEWARE
+         {
+            
             element: <Admin />,
             children: [
-                {
-                    path: "/registration",
-                    element: <Register/>
+            {
+            path: "/registration",
+            element: <Register/>
                 },
-                 {
+                {
             path: "/teacher",
             element: <TeacherDashboard/>
         },
         {
             path: "/parent",
-            element: <ParentDashboard/>
+            element: <ParentDashboard />,
+            children: [
+                {
+            path: ":addChild",
+            element: <AddChild/>
+        },
+            ]
         },
         {
             path: "/student",
-            element: <StudentDashboard/>
+            element: <StudentDashboard />
         },
+        
         {
-            path: "/addChild",
-            element: <AddChild/>
-        },
-        {
-            path: "/update",
+            path: ":updateId",
             element: <UpdateDashboard/>
-        }
+        },
             ]
-            
         },
 
         //User Middleware
@@ -115,6 +119,10 @@ export const routes = createBrowserRouter([
         {
             path: "/quizzes",
             element: <ShowQuiz/>
+        },
+        {
+            path: "/modelAnswer",
+            element: <ModelAnswer/>
         },
         {
             path: "/reports",

@@ -1,49 +1,29 @@
 const questions = [
     {
-        question: "What is largest animal in the world?",
+        question: " What is the name of the animal that you may not know a lot about?",
         answers: [
-            {text:"Shark", correct: false},
-            {text:"Blue Whale", correct: true},
-            {text:"Elephant", correct: false},
-            {text:"Giraffe", correct: false},
+            {text:"desert lizard", correct: false},
+            {text:"penguin", correct: true},
+            {text:"lizard", correct: false},
+            {text:"polar bear", correct: false},
         ]
     },
     {
-        question: "Which is the smallest country in the world?",
+        question: "What does the way blood moves through a penguin’s feet keep them warm?",
         answers: [
-            {text:"Vatican City", correct: true},
-            {text:"Cairo", correct: false},
-            {text:"Roma", correct: false},
-            {text:"London", correct: false},
+            {text:"the way blood moves", correct: true},
+            {text:"the way fat moves", correct: false},
+            {text:"the way feathers move", correct: false},
         ]
     },
     {
-        question: "Which is the longest river in the world?",
+        question: "What is the name of the adaptation that hides animals from predators?",
         answers: [
-            {text:"Amazon", correct: false},
-            {text:"Yellow River", correct: false},
-            {text:"Nile", correct: true},
-            {text:"Congo River", correct: false},
+            {text:"fur", correct: false},
+            {text:"predenting", correct: false},
+            {text:"camouflage", correct: true},
         ]
     },
-    {
-        question: "Which is the largest desert in the world?",
-        answers: [
-            {text:"Ferlo Desert", correct: false},
-            {text:"Eastern Desert", correct: false},
-            {text:"Accona Desert", correct: false},
-            {text:"Antarctic Desert", correct: true},
-        ]
-    },
-    {
-        question: "Which is the smallest continent in the world?",
-        answers: [
-            {text:"Asia", correct: false},
-            {text:"Arctic", correct: false},
-            {text:"Astralia", correct: true},
-            {text:"Africa", correct: false},
-        ]
-    }
 ];
 
 

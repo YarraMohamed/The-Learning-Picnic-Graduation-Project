@@ -1,4 +1,4 @@
-@media (max-width: 400px){
+@media (max-width: 300px){
     .gridContainer{
         display: grid;
         grid-template-columns: repeat(1, 1fr);

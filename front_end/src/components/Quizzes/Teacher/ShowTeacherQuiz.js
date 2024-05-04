@@ -40,7 +40,7 @@ const ShowTeacherQuiz = () => {
   
   return (
 
-    <div className='bodyTeacherQuiz'>
+    <div className='bodyTeacherQuiz p-3' >
 
        {quizzes.loading === true && (
           <div className="flex items-center justify-center h-screen">
@@ -48,7 +48,6 @@ const ShowTeacherQuiz = () => {
         </div>
        )}
 
-      <div className="content-container p-3">
         <div className='row-auto'>
         <div class="gridContainer grid grid-cols-6 gap-4">
         {quizzes.results && quizzes.results.map((quiz,index) => (
@@ -57,7 +56,6 @@ const ShowTeacherQuiz = () => {
         </div>
       </div>
        </div>
-    </div>
   )
 }
 

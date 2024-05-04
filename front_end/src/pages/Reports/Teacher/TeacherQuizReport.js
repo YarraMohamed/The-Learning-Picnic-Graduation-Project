@@ -50,14 +50,34 @@ const TeacherQuizReport = () => {
       </tr>
     </thead>
     <tbody>
-    {/* {report.results && report.results.questions.map((question, index) => (
-      <tr key={index}>
-        <td className="text-base text-black">{question.questionText}</td>
-        <td>{question.scorePercentage * 100}%</td>
-        <td>{question.timesAnswered} times</td>
+      {/* row 1 */}
+      <tr>
+       
+        <td className="text-base text-black">Question 1</td>
+        <td>90%</td>
+        <td>2 times</td>
+      
       </tr>
-    ))} */}
-         
+      {/* row 2 */}
+      <tr>
+       
+        <td className="text-base text-black">Question 2</td>
+              <td>80%</td>
+              <td>10 times</td>
+        
+      </tr>
+      {/* row 3 */}
+      <tr>
+        
+        <td className="text-base text-black">Question 3</td>
+        <td>50%</td>
+       <td>5 times</td>
+      </tr>
+      <tr>
+        <td className="text-base text-black">Question 4</td>
+        <td>60%</td>
+        <td>9 times</td>
+      </tr>         
    
     </tbody>
   </table>

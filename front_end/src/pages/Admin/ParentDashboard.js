@@ -1,14 +1,61 @@
-import React from 'react'
+import React,  { useEffect, useState } from 'react'
 import '../style/TeacherDashboard.css'
-import { Link } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
+import axios from 'axios';
+import { getAuthUser } from '../../helper/Storage';
 
 const ParentDashboard = () => {
+
+  const Navigate= useNavigate();
+  const Auth = getAuthUser();
+  
+  const [parents, setParents] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    reload: 0
+  });
+
+  useEffect(() => {
+    setParents(prevParents => ({ ...prevParents, loading: true }));
+    axios.get(`${process.env.REACT_APP_API_URL}/users` , {
+      headers: {
+        Authorization: `Bearer ${Auth.data.token}`,
+      },
+      params: {
+        role: "parent"
+      }
+    })
+      .then((res) => {
+        setParents(prevParents => ({ ...prevParents, results: res.data.users, loading: false, err: null }));
+      })
+      .catch((err) => {
+        setParents(prevParents => ({ ...prevParents, loading: false, err: "Error getting students" }));
+      })
+    
+    
+  }, [parents.reload]);
+
+
+  const deleteUser = (id) => {
+     axios.delete(`${process.env.REACT_APP_API_URL}/users/`+ id, {
+      headers: {
+        Authorization: `Bearer ${Auth.data.token}`,
+      }
+    })
+      .then((res) => {
+        setParents(prevParents => ({ ...prevParents, reload: parents.reload + 1 }));
+      })
+      .catch((err) => {
+        setParents(prevParents => ({ ...prevParents, loading: false, err: "something went wrong , please try again later!" }));
+      })
+  }
+
   return (
     <div className="teacherDash min-h-screen bg-white p-6">
           <div className="header flex justify-between mb-2 mt-1">
               <h4 className="text-center text-4xl font-bold">Manage Parents</h4>
               
-              <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-base px-5 py-2.5 text-center me-2 mb-2">Add New Parent</button>
           </div>
 
           <div class="flex flex-1 items-center justify-center p-6">
@@ -28,72 +75,53 @@ const ParentDashboard = () => {
           <th class="text-left py-3 px-4 uppercase font-semibold text-base">Full Name</th>
           <th class="text-left py-3 px-4 uppercase font-semibold text-base">Phone</th>
           <th class="w-1/5 text-left py-3 px-4 uppercase font-semibold text-base">Email</th>
-          <th class="w-1/5 text-left py-3 px-4 uppercase font-semibold text-base">Password</th>
+
           <th class="text-center py-3 px-4 uppercase font-semibold text-base">Action</th>
         </tr>
       </thead>
-    <tbody class="text-gray-700">
-      <tr>
-        <td class="text-left py-3 px-4 text-lg">Jon Snow</td>
-        <td class="text-left py-3 px-4 text-lg">0123456789</td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg"><a class="hover:text-blue-500" href="mailto:jonsmith@mail.com">johnsmith@mail.com</a></td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg">xxxxxxxxxxxxxxxxxxxxxxxxxx</td>
-        <td className="text-center">
-                <Link to={"/update"}>
-                       <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>               
-                </Link>
-                
-             <Link to={"/addChild"}>
-                <button type="button" class="focus:outline-none text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-1 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-900">Add child</button>                                     
-            </Link>
-            <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>         
-        </td>               
-      </tr>
-      <tr class="bg-gray-100">
-        <td class="text-left py-3 px-4 text-lg">Emma Stone</td>
-       <td class="text-left py-3 px-4 text-lg">0123456789</td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg"><a class="hover:text-blue-500" href="mailto:jonsmith@mail.com">emaasto@mail.com</a></td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg">xxxxxxxxxxxxxxxxxxxxxxxxxx</td>
-        <td>
-            <Link to={"/update"}>
-                       <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>               
-                </Link>
-            <Link to={"/addChild"}>
-                <button type="button" class="focus:outline-none text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-1 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-900">Add child</button>                                     
-            </Link>                    
-                <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>     
-        </td> 
-      </tr>
-      <tr>
-        <td class="text-left py-3 px-4  text-lg">Toni Kross</td>
-        <td class="text-left py-3 px-4  text-lg">0123456789</td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg"><a class="hover:text-blue-500" href="mailto:jonsmith@mail.com">toniis@mail.com</a></td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg">xxxxxxxxxxxxxxxxxxxxxxxxxx</td>
-        <td>
-            <Link to={"/update"}>
-                       <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>               
-                </Link>
- <Link to={"/addChild"}>
-                <button type="button" class="focus:outline-none text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-1 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-900">Add child</button>                                     
-            </Link>                 
-                 <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button> 
-        </td> 
-      </tr>
-      <tr class="bg-gray-100">
-        <td class="text-left py-3 px-4 text-lg">William Saliba</td>
-        <td class="text-left py-3 px-4 text-lg">0123456789</td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg"><a class="hover:text-blue-500" href="mailto:jonsmith@mail.com">wiliamsaliba@mail.com</a></td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg">xxxxxxxxxxxxxxxxxxxxxxxxxx</td>
-        <td>
-                <Link to={"/update"}>
-                       <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>               
-                </Link>
-            <Link to={"/addChild"}>
-                <button type="button" class="focus:outline-none text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-3 py-2 me-2 mb-1 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-900">Add child</button>                                     
-            </Link>
-                <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>  
-        </td>
-      </tr>
+            <tbody class="text-gray-700">
+              
+              
+     {
+                parents.results && parents.results.map((parent) => (
+                    <tr key={parent._id}>
+                      <td class="text-left py-3 px-4 text-lg">{parent.firstName} {" "} {parent.lastName}</td>
+                      <td class="text-left py-3 px-4 text-lg">{parent.phone}</td>
+                      <td class="w-1/5 text-left py-3 px-4 text-lg">{parent.email}</td>
+                      <td className="text-center">
+
+                      <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-1 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                    onClick={(e) => {
+              Navigate("/"+parent._id)
+                  }}>Update</button>
+
+
+
+      
+                      <button type="button" class="focus:outline-none text-white bg-orange-700 hover:bg-orange-800 focus:ring-4 focus:ring-orange-300 font-medium rounded-lg text-sm px-3 py-2 me-1 mb-1 dark:bg-orange-600 dark:hover:bg-orange-700 dark:focus:ring-orange-900"
+                      onClick={(e) => {
+              Navigate("/parent/"+parent._id)
+                  }}>Add child</button>
+                      
+
+                        <button type="button" onClick={(e) => {
+              deleteUser(parent._id);
+                  }} class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 mb-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>
+                      </td>
+                    </tr>
+                  )
+                )
+              }
+              {
+                parents.results.length === 0 && (
+                  <tr>
+                     <td colspan="4" className='p-3 text-center text-black text-lg font-bold'>There is no data to show.</td>
+                  </tr>
+                )
+              }
+     
+        
+    
     </tbody>
     </table>
   </div>

@@ -90,4 +90,4 @@ const ParentReport = () => {
 }
 
 
-export default ParentReport
+export default ParentReport;
