@@ -6,33 +6,31 @@ const userRoles = require("../utils/userRoles")
 const verifyToken = require("../middleware/verifyToken")
 const multer = require("multer");
 
-
 const diskStorage = multer.diskStorage(
-      {
-          destination: function (req, file, cb) {
-              cb(null, 'uploads')
-          },
-          filename: function (req, file, cb) {
-              const fileName = file.originalname
-              cb(null, fileName)
-          },
-  
-      }
-  )
-  
-  const fileFilter = (req, file, cb) => {
-      const imageFile = file.mimetype.split("/")[1];
-      if (imageFile === 'jpeg' || imageFile === 'png') {
-          return cb(null, true)
-      }
-      else
-          return cb(appError.create('file must be image', 404, false))
-  }
-  
-  
-  
-const upload = multer({ storage: diskStorage, fileFilter })
+    {
+        destination: function (req, file, cb) {
+            cb(null, 'uploads')
+        },
+        filename: function (req, file, cb) {
+            const fileName = file.originalname
+            cb(null, fileName)
+        },
 
+    }
+)
+
+const fileFilter = (req, file, cb) => {
+    const imageFile = file.mimetype.split("/")[1];
+    if (imageFile === 'jpeg' || imageFile === 'png') {
+        return cb(null, true)
+    }
+    else
+        return cb(appError.create('file must be image', 404, false))
+}
+
+
+
+const upload = multer({ storage: diskStorage, fileFilter })
 
 router.route("/register")
     .post(verifyToken, allowedTo(userRoles.ADMIN), userController.register)
@@ -50,7 +48,6 @@ router.route("/")
 
 router.route("/parent/:id")
     .put(verifyToken, allowedTo(userRoles.ADMIN), userController.addChildEmail)
-
 
 router.route("/profileImage")
     .post(upload.single('profileImage'), userController.uploadImage)

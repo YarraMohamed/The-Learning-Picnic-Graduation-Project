@@ -14,7 +14,7 @@ const register = asyncWrapper(async (req, res, next) => {
     if (oldUser) {
         const error = appError.create("User already exists", 400, httpStatusText.FAIL)
         // return next(error)
-        return res.status(error.statusCode).json({error})
+        return res.status(error.statusCode).json({ error })
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User(
@@ -41,108 +41,109 @@ const login = asyncWrapper(async (req, res, next) => {
     if (!email || !password) {
         const error = appError.create("email and password are required", 400, httpStatusText.FAIL)
         // next(error);
-        return res.status(error.statusCode).json({error})
+        return res.status(error.statusCode).json({ error })
     }
     const user = await User.findOne({ email: email });
     if (!user) {
         const error = appError.create("user not found", 400, httpStatusText.FAIL)
         // return next(error)
-        return res.status(error.statusCode).json({error})
+        return res.status(error.statusCode).json({ error })
     }
     const matchedPassword = await bcrypt.compare(password, user.password)
     if (user && matchedPassword) {
         const token = await generateJWT({ email: user.email, id: user._id, role: user.role })
-        res.status(200).json({ status: httpStatusText.SUCCESS, data: { token : token , role : user.role} })
+        res.status(200).json({ status: httpStatusText.SUCCESS, data: { token: token, role: user.role } })
         //blacklist.removeTokenFromBlacklist(token)
 
     }
     else {
         const error = appError.create("something wrong", 500, httpStatusText.ERROR)
         // return next(error)
-        return res.status(error.statusCode).json({error})
+        return res.status(error.statusCode).json({ error })
     }
 });
 
 
-const viewAccount = asyncWrapper(async (req,res,next)=> {
-    const userId = req.currentUser.id
+const viewAccount = asyncWrapper(async (req, res, next) => {
+    const userId = req.params.id
+
     const user = await User.findById(
-       { _id : userId },
-       {token:0,password:0}
-        )
-    if(!user){
-        const error = appError.create("No user found",400,httpStatusText.FAIL)
-        return res.status(error.statusCode).json({error})
+        { _id: userId },
+        { token: 0, password: 0 }
+    )
+    if (!user) {
+        const error = appError.create("No user found", 400, httpStatusText.FAIL)
+        return res.status(error.statusCode).json({ error })
     }
     else {
-        res.status(200).json({status : httpStatusText.SUCCESS ,data : user})
+        res.status(200).json({ status: httpStatusText.SUCCESS, data: user })
     }
 
 });
 
-const getAllUser = asyncWrapper(async (req,res,next)=> {
-    const  {role} = req.query;
-    if(role === "teacher"){
-        const users = await User.find({role : userRoles[role.toUpperCase()]});
-        res.status(200).json({users})
+const getAllUser = asyncWrapper(async (req, res, next) => {
+    const { role } = req.query;
+    if (role === "teacher") {
+        const users = await User.find({ role: userRoles[role.toUpperCase()] });
+        res.status(200).json({ users })
 
-    } else if ( role === "student"){
-        const users = await User.find({role : userRoles[role.toUpperCase()]});
-        res.status(200).json({users})
+    } else if (role === "student") {
+        const users = await User.find({ role: userRoles[role.toUpperCase()] });
+        res.status(200).json({ users })
 
-    } else if ( role === "parent"){
-        const users = await User.find({role : userRoles[role.toUpperCase()]});
-        res.status(200).json({users})
+    } else if (role === "parent") {
+        const users = await User.find({ role: userRoles[role.toUpperCase()] });
+        res.status(200).json({ users })
     } else {
-         const users = await User.find();
-         res.status(200).json({users})
+        const users = await User.find();
+        res.status(200).json({ users })
 
     }
 });
 
-const deleteUser = asyncWrapper(async(req,res,next)=>{
-    const {id} = req.params.id
+const deleteUser = asyncWrapper(async (req, res, next) => {
+    const { id } = req.params.id
     const user = await User.findById(req.params.id)
-    if(!user){
-        const error = appError.create("No user found",400,httpStatusText.FAIL)
-        return res.status(error.statusCode).json({error})
+    if (!user) {
+        const error = appError.create("No user found", 400, httpStatusText.FAIL)
+        return res.status(error.statusCode).json({ error })
     } else {
-        await User.deleteOne({_id:req.params.id})
-        await userAnswers.deleteOne({userId : req.params.id})
-        await quizResults.deleteOne({userId : req.params.id})
-     res.json({ status: httpStatusText.SUCCESS, data: null })
+        await User.deleteOne({ _id: req.params.id })
+        await userAnswers.deleteOne({ userId: req.params.id })
+        await quizResults.deleteOne({ userId: req.params.id })
+        res.json({ status: httpStatusText.SUCCESS, data: null })
 
     }
 });
 
-const updateUser = asyncWrapper(async(req,res,next)=>{
-    const { id } = req.params; 
-    const updates = req.body; 
+const updateUser = asyncWrapper(async (req, res, next) => {
+    const { id } = req.params;
+    const updates = req.body;
 
     const user = await User.findById(id);
 
     if (!user) {
-        const error = appError.create("No user found",400,httpStatusText.FAIL)
-        return res.status(error.statusCode).json({ error});
+        const error = appError.create("No user found", 400, httpStatusText.FAIL)
+        return res.status(error.statusCode).json({ error });
     }
 
     Object.keys(updates).forEach((key) => {
-      user[key] = updates[key];
+        user[key] = updates[key];
     });
 
     await user.save();
 
-return res.status(200).json({status : httpStatusText.SUCCESS , data :{user}});
+    return res.status(200).json({ status: httpStatusText.SUCCESS, data: { user } });
 });
 
-const addChildEmail = asyncWrapper(async(req,res,next)=>{
-    const {childernEmails} = req.body
+const addChildEmail = asyncWrapper(async (req, res, next) => {
+    const { childernEmails } = req.body
     const id = req.params.id
 
-    const parent = await User.findOne({_id : id , role : "PARENT"})
-    if(!parent){
-        const error = appError.create("No user found",400,httpStatusText.FAIL)
-        return res.status(error.statusCode).json({ error});
+    const parent = await User.findOne({ _id: id, role: "PARENT" })
+    if (!parent) {
+        const error = appError.create("No user found", 400, httpStatusText.FAIL)
+        return res.status(error.statusCode).json({ error });
     }
 
     if (childernEmails && childernEmails.length > 0) {
@@ -159,11 +160,11 @@ const addChildEmail = asyncWrapper(async(req,res,next)=>{
         }
     }
     await parent.save();
-    res.json({ status: httpStatusText.SUCCESS, data: { childernEmails : childernEmails } });
+    res.json({ status: httpStatusText.SUCCESS, data: { childernEmails: childernEmails } });
 });
-
 const uploadImage = asyncWrapper(async (req, res, next) => {
-    const userId = req.currentUser.id;
+    const userId = '65258316754ede6b1e86848f' //req.currentUser.id;
+
     if (!req.file) {
         const error = appError.create("image reuqired", 400, httpStatusText.FAIL)
         return next(error)
@@ -173,10 +174,7 @@ const uploadImage = asyncWrapper(async (req, res, next) => {
     const imageFile = req.file.originalname;
     user.profileImage = imageFile;
     await user.save();
-
-    res.json({ status: httpStatusText.SUCCESS, data: { user } });
-})
-
+  
 /* const logout = (req, res,) => {
     // const token = req.headers['Authorization'] || req.headers['authorization'] 
     const authHeader = req.headers['Authorization'] || req.headers['authorization']

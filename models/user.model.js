@@ -46,12 +46,12 @@ const userSchema = new mongoos.Schema({
         default: userRoles.STUDENT
 
     },
-    childernEmails : [
+    childernEmails: [
         {
-            type : String
+            type: String
 
         }
-       
+
     ]
 })
 module.exports = mongoos.model('User', userSchema)
