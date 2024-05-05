@@ -29,7 +29,11 @@ const Login = () => {
     }).then((resp)=>{
       setLogin({...login, loading: true, err: ""})
       setAuthUser(resp.data.data);
-      Navigate("/");
+      if (resp.data.data.role === "ADMIN") {
+        Navigate("/registration")
+      } else {
+        Navigate("/home")
+      }
 
     }).catch((errors) => {
       setLogin({...login, loading: false, err: errors.response.data.error.message, });

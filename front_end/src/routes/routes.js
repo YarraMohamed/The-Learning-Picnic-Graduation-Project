@@ -17,8 +17,9 @@ import TeacherDashboard from "../pages/Admin/TeacherDashboard";
 import ParentDashboard from "../pages/Admin/ParentDashboard";
 import StudentDashboard from "../pages/Admin/StudentDashboard";
 import AddChild from "../pages/Admin/DashboardFunctions/AddChild";
-import ModelAnswer from "../pages/ModelAnswer/ModelAnswer";
 import UpdateDashboard from "../pages/Admin/DashboardFunctions/UpdateDashboard";
+import ModelAnswer from "../pages/ModelAnswer/ModelAnswer";
+import ShowQuizPT from "../pages/ShowQuizPT/ShowQuizPT";
 import Guest from "../middleware/Guest";
 import Admin from "../middleware/Admin";
 import User from "../middleware/User";
@@ -29,27 +30,21 @@ export const routes = createBrowserRouter([
     path: "",
     element: <App />,
     errorElement: <Error />,
-    children: [
-        {
-        path: "/",
-        element: <Home/>,
-        },
-        
-        // Guest Middleware
+        children: [
+           
+        // GUEST MIDDLEWARE 
         {
             element: <Guest />,
             children: [
-                    {
-                    path: "/login",
-                    element: <Login/>,
-                    },
-                    
-            ]
-    
+               {
+        path: "/",
+        element: <Login/>,
         },
-
-         // ADMIN MIDDLEWARE
-         {
+            ]
+        },
+        
+        // ADMIN MIDDLEWARE
+        {
             
             element: <Admin />,
             children: [
@@ -62,23 +57,22 @@ export const routes = createBrowserRouter([
             element: <TeacherDashboard/>
         },
         {
-            path: '/parent',
-            children : [
+            path: "/parent", 
+            children: [
                 {
-                    path : "",
-                    element : <ParentDashboard/>
+                    path: "",
+                    element: <ParentDashboard />,
                 },
                 {
-                    path : ':id',
-                    element : <AddChild/>
-                }
+                    path: ":id",
+                    element: <AddChild/>
+                },
             ]
         },
         {
             path: "/student",
             element: <StudentDashboard />
-        },
-        
+        },     
         {
             path: ":updateId",
             element: <UpdateDashboard/>
@@ -86,14 +80,14 @@ export const routes = createBrowserRouter([
             ]
         },
 
-        //User Middleware
+        // USER MIDDLEWARE
         {
             element: <User />,
             children: [
              {
-                    path: "/login",
-                    element: <Login/>,
-                    },
+                path: "/home",
+                element: <Home />,
+            },
                 {
         path: "/contact",
         element: <Contact/>,
@@ -124,30 +118,29 @@ export const routes = createBrowserRouter([
             element: <ShowQuiz/>
         },
         {
-            path: "/modelAnswer",
-            element: <ModelAnswer/>
-        },
-        {
             path: "/reports",
-            children :[
-                {
-                    path:"",
-                    element :<ShowReports/>
-                },
-                {
-                    path: ":id",
-                    element : <TeacherQuizReport/>
-                }
-            ]
+            element: <ShowReports/>
         },
         {
             path: ":id",
             element: <Questions/>,
         },
-            ]
+        {
+            path: "/quizReports",
+            element: <TeacherQuizReport/>
         },
         
-       
+        {
+            path: "/modelAnswer",
+            element: <ModelAnswer/>
+        },
+        {
+            path: "/showQuizPT",
+            element: <ShowQuizPT/>
+        }
+            ]
+        },   
+    
     ]
   }
 ]);
