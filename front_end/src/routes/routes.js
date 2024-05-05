@@ -130,18 +130,10 @@ export const routes = createBrowserRouter([
                 }
             ]
         },
-        // {
-        //     path: "/reports",
-        //     element: <ShowReports/>
-        // },
         {
             path: ":id",
             element: <Questions/>,
         },
-        // {
-        //     path: "/quizReports",
-        //     element: <TeacherQuizReport/>
-        // },
         {
             path: '/modelAnswer',
             children : [
@@ -151,14 +143,15 @@ export const routes = createBrowserRouter([
                 }
             ]
         },
-        // {
-        //     path: "/modelAnswer",
-        //     element: <ModelAnswer/>
-        // },
         {
             path: "/showQuizPT",
-            element: <ShowQuizPT/>
-        }
+            children : [
+                {
+                    path : ':id',
+                    element : <ShowQuizPT/>
+                }
+            ]
+        },
             ]
         },   
     
