@@ -9,7 +9,6 @@ import { TEInput } from "tw-elements-react";
 import close from './close.png'
 
 
-
 const Login = () => {
 
   const Navigate = useNavigate();

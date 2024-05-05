@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment , useEffect , useState } from 'react'
 import { Disclosure, Menu, Transition } from '@headlessui/react'
 import { Bars3Icon, BellIcon, XMarkIcon } from '@heroicons/react/24/outline'
 import image from '../assets/logo2.png'
@@ -15,14 +15,41 @@ function classNames(...classes) {
 }
 
 const Header = () => {
-
+  const [profileImage, setProfileImage] = useState('');
   const Navigate = useNavigate();
   const Auth = getAuthUser();
+
+ 
+
+  const image = () => {
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/users/Account`, {
+        headers: {
+          Authorization: `Bearer ${Auth.token}`,
+        },
+      })
+      .then((resp) => {
+        if(resp.data.data.profileImage)
+          {
+            const fetchedProfileImage = `${process.env.REACT_APP_API_URL}/uploads/${resp.data.data.profileImage}`;
+            setProfileImage(fetchedProfileImage)
+          } else {
+            const profile = `${process.env.REACT_APP_API_URL}/uploads/Profile_photo.png`
+            setProfileImage(profile)
+          }
+      })
+      .catch((err) => {
+        const profile = `${process.env.REACT_APP_API_URL}/uploads/Profile_photo.png`
+        setProfileImage(profile)
+      });
+  };
 
   const Logout = () => {
     removeAuthUser();
     Navigate("/");
   }
+
+ 
 
   return (
    
@@ -96,9 +123,12 @@ const Header = () => {
                       <span className="absolute -inset-1.5" />
                       <span className="sr-only">Open user menu</span>
                       <img
-                        className="h-8 w-8 rounded-full"
-                        src={profile}
-                        alt="Profile Photo"
+                         className="h-8 w-8 rounded-full"
+                           src={(() => {
+                               image();
+                                return profileImage;
+                          })()}
+                          alt="Profile Photo"
                       />
                     </Menu.Button>
                   </div>
