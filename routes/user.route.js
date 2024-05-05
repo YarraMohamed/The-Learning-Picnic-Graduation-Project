@@ -39,6 +39,9 @@ router.route("/register")
 
 router.route("/login")
     .post(userController.login)
+    
+router.route("/Account")
+    .get(verifyToken,userController.viewAccount)
 
 router.route("/:id")
     .get(verifyToken, allowedTo(userRoles.ADMIN), userController.getUserById)
@@ -48,13 +51,8 @@ router.route("/:id")
 router.route("/")
     .get(verifyToken, allowedTo(userRoles.ADMIN), userController.getAllUser)
     
-router.route("/Account")
-    .get(verifyToken, userController.viewAccount)
-
-
 router.route("/parent/:id")
     .put(verifyToken, allowedTo(userRoles.ADMIN), userController.addChildEmail)
-
 
 router.route("/profileImage")
     .post(verifyToken,upload.single('profileImage'), userController.uploadImage)

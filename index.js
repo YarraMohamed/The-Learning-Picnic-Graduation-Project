@@ -41,7 +41,7 @@ app.all('*', (req, res) => {
 })
 
 app.use((error, req, res, next) => {
-    // console.log(error)
+    console.log(error)
     res.status(error.statusCode || 500).json({ status: error.statusText || httpStatusText.ERROR, code: error.statusCode || 500, data: null })
 })
 app.listen(process.env.PORT, () => {
