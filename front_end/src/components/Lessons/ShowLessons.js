@@ -1,13 +1,15 @@
 import React from 'react'
-import { useState } from 'react'
 import ShowLessonsStudent from './Student/ShowLessonsStudent'
 import ShowLessonsTeacher from './Teacher/ShowLessonsTeacher'
+import { getAuthUser } from '../../helper/Storage'
 
 
 const ShowLessons = () => {
 
-    const [loggedIn, setLoggedIn] = useState(false)
-    if (loggedIn) {
+
+    const Auth = getAuthUser();
+    if (Auth && Auth.role === "TEACHER") {
+        
         return (
             <ShowLessonsTeacher/>
         )
@@ -18,4 +20,4 @@ const ShowLessons = () => {
     }
 }
 
-export default ShowLessons
+export default ShowLessons;

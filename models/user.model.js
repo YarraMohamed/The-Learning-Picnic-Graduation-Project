@@ -30,6 +30,11 @@ const userSchema = new mongoos.Schema({
         type: String,
         required: true,
     },
+    profileImage:
+    {
+        type: String,
+        default: ''
+    },
     token:
     {
         type: String,
@@ -41,5 +46,12 @@ const userSchema = new mongoos.Schema({
         default: userRoles.STUDENT
 
     },
+    childernEmails : [
+        {
+            type : String
+
+        }
+       
+    ]
 })
 module.exports = mongoos.model('User', userSchema)

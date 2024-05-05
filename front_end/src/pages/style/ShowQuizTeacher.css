@@ -9,6 +9,15 @@
         animation: AnimateBG 7s ease infinite;
 }
 
+@media (max-width: 424px) {
+    .gridContainer {
+        display: grid;
+        grid-template-columns: repeat(1, 1fr);
+    }
+}
+
+
+
 @-webkit-keyframes AnimateBG {
     0% {
         background-position: 0% 50%;
