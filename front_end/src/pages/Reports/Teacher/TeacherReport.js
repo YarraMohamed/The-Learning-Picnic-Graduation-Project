@@ -23,7 +23,7 @@ const TeacherReport = () => {
         setReport({ ...report, results: resp.data.data.reports, loading: false });
       })
       .catch(err => {
-        setReport({ ...report, err: err.data.data.msg, loading: false })
+        setReport({ ...report,err:err.response.data.error.message , loading: false })
       })
   }
 

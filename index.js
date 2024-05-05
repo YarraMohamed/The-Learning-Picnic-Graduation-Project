@@ -41,8 +41,9 @@ app.all('*', (req, res) => {
 })
 
 app.use((error, req, res, next) => {
+    console.log(error)
     res.status(error.statusCode || 500).json({ status: error.statusText || httpStatusText.ERROR, code: error.statusCode || 500, data: null })
 })
 app.listen(process.env.PORT, () => {
-    console.log("server is running on port 2222 successfully")
+    console.log(`server is running on port ${process.env.PORT} successfully`)
 })

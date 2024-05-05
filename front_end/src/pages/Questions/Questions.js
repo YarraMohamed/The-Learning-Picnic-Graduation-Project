@@ -76,7 +76,7 @@ function selectAnswer(e) {
 function showScore() {
     resetState();
     questionElement.innerHTML = `You Scored ${score} out of ${questions.length}!`;
-    nextButton.innerHTML = "Play Again";
+    nextButton.innerHTML = "Return";
     nextButton.style.display = "block";
  }
 
@@ -105,7 +105,7 @@ nextButton.addEventListener("click", () => {
     <div className='quizBody'>
       <>
         <div className="quizContainer">
-        <h1>Quiz ##</h1>
+        <h1>Quiz 1</h1>
         <div className="quiz">
             <h2 id="question" ref={questionElementRef}>question goes here</h2>
             <div id="answer-buttons" ref={answerButtonsRef}>

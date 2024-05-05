@@ -5,3 +5,12 @@
 .mainCardQuiz:hover{
     border: 2.4px solid rgb(1, 1, 107);
 }
+
+@media (max-width: 300px) {
+    .mainCardQuiz{
+        margin: 0 0.25rem;
+    }
+    .mainCardQuiz div button{
+        margin-bottom: 2px;
+    }
+}

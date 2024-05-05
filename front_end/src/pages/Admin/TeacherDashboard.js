@@ -1,14 +1,60 @@
-import React from 'react'
+import React,  { useEffect, useState } from 'react'
 import '../style/TeacherDashboard.css'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import axios from 'axios';
+import { getAuthUser } from '../../helper/Storage';
 
 const TeacherDashboard = () => {
+
+  const Navigate= useNavigate();
+  const Auth = getAuthUser();
+  
+  const [teachers, setTeachers] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    reload: 0
+  });
+
+  useEffect(() => {
+    setTeachers(prevTeachers => ({ ...prevTeachers, loading: true }));
+    axios.get(`${process.env.REACT_APP_API_URL}/users`, {
+      headers: {
+        Authorization: `Bearer ${Auth.token}`,
+      },
+      params: {
+        role: "teacher"
+      }
+    })
+      .then((res) => {
+        setTeachers(prevTeachers => ({ ...prevTeachers, results: res.data.users, loading: false, err: null }));
+      })
+      .catch((err) => {
+        setTeachers(prevTeachers => ({ ...prevTeachers, loading: false, err: "Error getting students" }));
+      })
+    
+    
+  }, [teachers.reload]);
+
+  const deleteUser = (id) => {
+     axios.delete(`${process.env.REACT_APP_API_URL}/users/`+ id, {
+      headers: {
+        Authorization: `Bearer ${Auth.token}`,
+      }
+    })
+      .then((res) => {
+        setTeachers(prevTeachers => ({ ...prevTeachers, reload: teachers.reload + 1 }));
+      })
+      .catch((err) => {
+        setTeachers(prevTeachers => ({ ...prevTeachers, loading: false, err: "something went wrong , please try again later!" }));
+      })
+  }
+
   return (
     <div className="teacherDash min-h-screen bg-white p-6">
           <div className="header flex justify-between mb-2 mt-1">
               <h4 className="text-center text-4xl font-bold">Manage Teachers</h4>
              
-              <button type="button" class="text-white bg-gradient-to-r from-green-400 via-green-500 to-green-600 hover:bg-gradient-to-br focus:ring-4 focus:outline-none focus:ring-green-300 dark:focus:ring-green-800 shadow-lg shadow-green-500/50 dark:shadow-lg dark:shadow-green-800/80 font-medium rounded-lg text-base px-5 py-2.5 text-center me-2 mb-2">Add New Teacher</button>
           </div>
 
            <div class="flex flex-1 items-center justify-center p-6">
@@ -28,59 +74,45 @@ const TeacherDashboard = () => {
           <th class="text-left py-3 px-4 uppercase font-semibold text-base">Full Name</th>
           <th class="text-left py-3 px-4 uppercase font-semibold text-base">Phone</th>
           <th class="w-1/5 text-left py-3 px-4 uppercase font-semibold text-base">Email</th>
-          <th class="w-1/5 text-left py-3 px-4 uppercase font-semibold text-base">Password</th>
           <th class="text-center py-3 px-4 uppercase font-semibold text-base">Action</th>
         </tr>
       </thead>
-    <tbody class="text-gray-700">
-      <tr>
-        <td class="text-left py-3 px-4 text-lg">Jon Snow</td>
-        <td class="text-left py-3 px-4 text-lg">0123456789</td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg"><a class="hover:text-blue-500" href="mailto:jonsmith@mail.com">johnsmith@mail.com</a></td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg">xxxxxxxxxxxxxxxxxxxxxxxxxx</td>
-        <td className="text-center">
-                <Link to={"/update"}>
-                       <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>               
-                </Link>
-                <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>                  
-        </td>               
-      </tr>
-      <tr class="bg-gray-100">
-        <td class="text-left py-3 px-4 text-lg">Emma Stone</td>
-       <td class="text-left py-3 px-4 text-lg">0123456789</td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg"><a class="hover:text-blue-500" href="mailto:jonsmith@mail.com">emaasto@mail.com</a></td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg">xxxxxxxxxxxxxxxxxxxxxxxxxx</td>
-        <td>
-            <Link to={"/update"}>
-                       <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>               
-                </Link>
-                <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>                  
-        </td> 
-      </tr>
-      <tr>
-        <td class="text-left py-3 px-4  text-lg">Toni Kross</td>
-        <td class="text-left py-3 px-4  text-lg">0123456789</td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg"><a class="hover:text-blue-500" href="mailto:jonsmith@mail.com">toniis@mail.com</a></td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg">xxxxxxxxxxxxxxxxxxxxxxxxxx</td>
-        <td>
-            <Link to={"/update"}>
-                       <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>               
-                </Link>
-                <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>                  
-        </td> 
-      </tr>
-      <tr class="bg-gray-100">
-        <td class="text-left py-3 px-4 text-lg">William Saliba</td>
-        <td class="text-left py-3 px-4 text-lg">0123456789</td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg"><a class="hover:text-blue-500" href="mailto:jonsmith@mail.com">wiliamsaliba@mail.com</a></td>
-        <td class="w-1/5 text-left py-3 px-4 text-lg">xxxxxxxxxxxxxxxxxxxxxxxxxx</td>
-        <td>
-            <Link to={"/update"}>
-                       <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800">Update</button>               
-                </Link>
-                <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900">Delete</button>                  
-        </td>
-      </tr>
+            <tbody class="text-gray-700">
+              
+              {
+                teachers.results && teachers.results.map((teacher) => (
+                    <tr key={teacher._id}>
+                      <td class="text-left py-3 px-4 text-lg">{teacher.firstName} {" "} {teacher.lastName}</td>
+                      <td class="text-left py-3 px-4 text-lg">{teacher.phone}</td>
+                      <td class="w-1/5 text-left py-3 px-4 text-lg">{teacher.email}</td>
+                      <td className="text-center">
+               
+                      <button type="button" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-sm px-4 py-2 me-2 my-1 dark:bg-blue-600 dark:hover:bg-blue-700 focus:outline-none dark:focus:ring-blue-800"
+                      onClick={(e) => {
+              Navigate("/"+teacher._id) ;
+                  }}>
+                        Update</button>
+                    
+                         
+                      <button type="button" class="focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-4 py-2 me-2 mb-1 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900" onClick={(e) => {
+              deleteUser(teacher._id);
+                  }}>
+                        Delete</button>
+                      </td>
+                    </tr>
+                  )
+                )
+              }
+              {
+                teachers.results.length === 0 && (
+                  <tr>
+                     <td colspan="4" className='p-3 text-center text-black text-lg font-bold'>There is no data to show.</td>
+                  </tr>
+                )
+              }
+     
+      
+    
     </tbody>
     </table>
   </div>

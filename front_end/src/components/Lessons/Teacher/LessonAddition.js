@@ -62,7 +62,7 @@ const LessonAddition = () => {
   };
 
   return (
-    <div className='heroLessonAddition'>
+    <div className='heroLessonAddition min-h-[80vh]'>
       <form class="w-3/5 h-svh mx-auto my-4" onSubmit={createLesson}>
         <div class="mb-5">
 

@@ -34,7 +34,7 @@ const uploadLesson = asyncWrapper(async (req, res, next) => {
     const pythonProcess = spawn('python', ['machine/Summary.py', pdfPath]);
 
     pythonProcess.stdout.on('data', (data) => {
-        const summary = data.toString(); // Assuming summary comes as stdout from the Python script
+        const summary = data.toString();
         lesson.summary = summary;
         lesson.save().then(() => {
             res.status(200).json({ status: httpStatusText.SUCCESS, data: { lesson: newLesson } });
@@ -49,6 +49,7 @@ const uploadLesson = asyncWrapper(async (req, res, next) => {
         const error = appError.create("Error in generating the summary", 404, httpStatusText.FAIL);
        return res.status(error.statusCode).json({ error });
     });
+    
 });
 
 const retrieveLessons = asyncWrapper(async (req, res, next) => {

@@ -24,7 +24,7 @@ const ParentReport = () => {
         setReport(prevReport => ({ ...prevReport, results: resp.data.data.reports, loading: false }));
       })
       .catch(err => {
-        setReport(prevReport => ({ ...prevReport, err: err.data.data.msg, loading: false }));
+        setReport(prevReport => ({ ...prevReport, err:  err.response.data.error.message , loading: false }));
       });
   }
   
@@ -90,4 +90,4 @@ const ParentReport = () => {
 }
 
 
-export default ParentReport
+export default ParentReport;
