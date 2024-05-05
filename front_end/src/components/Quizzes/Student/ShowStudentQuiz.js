@@ -48,7 +48,7 @@ const ShowStudentQuiz = () => {
         <div className='row-auto'>
             <div class="gridContainer grid grid-cols-6 gap-4">
             {quizzes.results && quizzes.results.map((quiz,index) => (
-              <StudentQuizCard key={quiz.index} lessonName={quiz.lessonName} />
+              <StudentQuizCard key={quiz.index} lessonName={quiz.lessonName} _id={quiz._id} />
             ))} 
             </div>
         </div>

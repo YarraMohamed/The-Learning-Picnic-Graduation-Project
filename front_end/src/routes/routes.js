@@ -118,22 +118,43 @@ export const routes = createBrowserRouter([
             element: <ShowQuiz/>
         },
         {
-            path: "/reports",
-            element: <ShowReports/>
+            path: '/reports',
+            children : [
+                {
+                    path : "",
+                    element : <ShowReports/>
+                },
+                {
+                    path : ':id',
+                    element : <TeacherQuizReport/>
+                }
+            ]
         },
+        // {
+        //     path: "/reports",
+        //     element: <ShowReports/>
+        // },
         {
             path: ":id",
             element: <Questions/>,
         },
+        // {
+        //     path: "/quizReports",
+        //     element: <TeacherQuizReport/>
+        // },
         {
-            path: "/quizReports",
-            element: <TeacherQuizReport/>
+            path: '/modelAnswer',
+            children : [
+                {
+                    path : ':id',
+                    element : <ModelAnswer/>
+                }
+            ]
         },
-        
-        {
-            path: "/modelAnswer",
-            element: <ModelAnswer/>
-        },
+        // {
+        //     path: "/modelAnswer",
+        //     element: <ModelAnswer/>
+        // },
         {
             path: "/showQuizPT",
             element: <ShowQuizPT/>

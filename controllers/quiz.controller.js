@@ -92,10 +92,9 @@ const deleteQuiz = asyncWrapper(async (req, res, next) => {
 });
 
 const retrieveQuiz = asyncWrapper(async (req, res, next) => {
-    const quiz = await Quiz.findById(req.params.id)
+    const quiz = await Quiz.findById(req.params.quizId)
     if (!quiz) {
         const error = appError.create('quiz not found', 404, httpStatusText.FAIL)
-        // return next(error)
         return res.status(error.statusCode).json({ error })
     }
     else

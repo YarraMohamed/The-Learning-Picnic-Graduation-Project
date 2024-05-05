@@ -26,7 +26,7 @@ const ShowTeacherQuiz = () => {
         setQuizzes({ ...quizzes, results: resp.data.data.quiz, loading: false });
       })
       .catch(err => {
-        setQuizzes({ ...quizzes, loading: false, err: err.data.data.msg });
+        setQuizzes({ ...quizzes, loading: false, err: err.response.data.error.message });
       });
   };
 

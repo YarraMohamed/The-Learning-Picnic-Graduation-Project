@@ -11,7 +11,6 @@ const deleteModelAnswer = asyncWrapper(async (req, res, next) => {
     const modelAnswer = await ModelAnswer.findById(modelAnswerId);
     if (!modelAnswer) {
         const error = appError.create('quiz not found', 400, httpStatusText.FAIL)
-        // return next(error)
         return res.status(error.statusCode).json({error})
     }
     else {
@@ -35,7 +34,6 @@ const getModelAnswer = asyncWrapper(async (req, res, next) => {
     const modelAnswer = await ModelAnswer.find({ quizId: quizId })
     if (!modelAnswer) {
         const error = appError.create('no model answer found for this quiz', 400, httpStatusText.FAIL)
-        // return next(error)
         return res.status(error.statusCode).json({error})
     }
 
@@ -47,7 +45,6 @@ const getModelAnswer = asyncWrapper(async (req, res, next) => {
         const isQuizAnswered = await userAnswers.findOne({userId : userId})
         if(!isQuizAnswered){
             const error = appError.create('You should take the quiz first', 400, httpStatusText.FAIL)
-            // return next(error)
             return res.status(error.statusCode).json({error})
         }
         
