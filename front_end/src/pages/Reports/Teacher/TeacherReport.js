@@ -36,7 +36,7 @@ const TeacherReport = () => {
   }, 0);
 
   return (
-    <div className="reports">
+    <div className="reports min-h-screen">
       <div className="header d-flex justify-content-between mb-6">
         <h3 className="reportsTitle text-5xl font-semibold text-white my-2 mx-auto">Students Reports</h3>
       </div>

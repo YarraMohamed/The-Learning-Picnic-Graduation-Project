@@ -2,18 +2,31 @@ import React from 'react'
 import quiztime from '../../../assets/quiz-time.png'
 import { Link } from 'react-router-dom';
 import '../../../pages/style/QuizCard.css'
+import { getAuthUser } from '../../../helper/Storage';
 
 const StudentQuizCard = (props) => {
+  const Auth = getAuthUser();
+
   console.log(props)
   return (
-    <div className='card-quiz'>  
+    <div className='card-quiz min-h-screen'>  
       <div class="quizCard py-2">
-              <div class="mainCardQuiz mx-1 p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-gray-700">
+              <div class="mainCardQuiz mx-auto p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-gray-700">
                   <img src={quiztime} height={50} alt="" />  
-                  <h3 class="mb-1 text-2xl font-bold tracking-tight text-cyan-800 dark:text-cyan-800">{props.lessonName} Quiz</h3>
-                  <Link to={"/5"}>
+          <h3 class="mb-2 text-2xl font-bold tracking-tight text-cyan-800 dark:text-cyan-800">{props.lessonName} Quiz</h3>
+          
+          {Auth.role === 'PARENT' && (
+            <Link to={`/showQuizPT/${props._id}`}>
                       <button type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-base px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Show Quiz</button>
                   </Link>
+          )}
+
+          {Auth.role === 'STUDENT' && (
+            <Link to={`/5`}>
+                      <button type="button" class="text-white bg-gray-800 hover:bg-gray-900 focus:outline-none focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-base px-5 py-2.5 me-2 mb-2 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-700 dark:border-gray-700">Show Quiz</button>
+                  </Link>
+          )}
+                  
 
                   <Link to={`/modelAnswer/${props._id}`}>
 
