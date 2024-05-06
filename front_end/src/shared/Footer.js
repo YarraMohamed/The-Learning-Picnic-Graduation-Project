@@ -11,14 +11,10 @@ import Divider from '@mui/joy/Divider';
 import List from '@mui/joy/List';
 import ListSubheader from '@mui/joy/ListSubheader';
 import ListItem from '@mui/joy/ListItem';
-import ListItemButton from '@mui/joy/ListItemButton';
 import Typography from '@mui/joy/Typography';
 import Sheet from '@mui/joy/Sheet';
 import ColorLensRoundedIcon from '@mui/icons-material/ColorLensRounded';
-import { Link } from 'react-router-dom';
 import { Button } from '@mui/material';
-
-
 
 
 
@@ -110,6 +106,7 @@ const [color, setColor] = useState('primary');
             </List>
           </ListItem>
         </List>
+        
         <List
           size="md"
           orientation="horizontal"
@@ -119,21 +116,24 @@ const [color, setColor] = useState('primary');
           <ListItem nested sx={{ width: { xs: '100%', md: 160 } }}>
             <ListSubheader className="justify-center" sx={{fontSize:"lg"}}>Services</ListSubheader>
             <List>
-              <ListItem >
-                <ListItemButton className="justify-center"><Link to={"/lessons"}>Lessons</Link></ListItemButton>
+              <ListItem className="justify-center">
+                Lessons
               </ListItem>
-              <ListItem>
-                <ListItemButton className="justify-center"><Link to={"/quizzes"}>Quizzes</Link></ListItemButton>
+              <ListItem className="justify-center">
+                Quizzes
               </ListItem>
-              <ListItem>
-                <ListItemButton className="justify-center"><Link to={"/reports"}>Reports</Link></ListItemButton>
+              <ListItem className="justify-center">
+                Reports
+              </ListItem>
+              <ListItem className="justify-center">
+                Summarize
               </ListItem>
             </List>
           </ListItem>
         </List>
         </Box>
-        <div class="pb-1 mt-2 justify-center">
-      <div class="copyright justify-center text-center">
+        <div class="pb-1 mt-2 justify-center mx-auto">
+      <div class="copyright justify-center text-center mx-auto">
         All Copyrights © are reserved to <strong>Learning Picnic</strong>.
       </div>
     </div>
@@ -145,4 +145,4 @@ const [color, setColor] = useState('primary');
   )
 }
 
-export default Footer
+export default Footer;

@@ -1,10 +1,12 @@
 import React from "react";
 import '../../../pages/style/CardStudent.css'
 import studytime from '../../../assets/study-time.png'
+
 import axios from "axios";
 import { getAuthUser } from "../../../helper/Storage.js";
 import {saveAs} from 'file-saver';
 import { Link } from "react-router-dom";
+
 
 
 const LessonCardStudent = (props) => {
@@ -38,7 +40,9 @@ const LessonCardStudent = (props) => {
 
           <button type="button" class="text-white bg-blue-800 hover:bg-blue-900 focus:ring-4 focus:ring-blue-300 font-medium rounded-lg text-base px-3.5 py-2 me-1 mb-2 dark:bg-blue-700 dark:hover:bg-blue-800 focus:outline-none dark:focus:ring-blue-800" onClick={(e)=>{retrievePDF(props.pdfFile)}}>Show Lesson</button>
 
+
           <Link to={`/lessons/${props._id}`}>
+
             <button type="button" class="summarizationbtn inline-flex items-center focus:outline-none text-center text-white bg-green-600 hover:bg-green-800 focus:ring-4 focus:ring-green-300 focus:outline-none font-medium rounded-lg text-base px-3 py-2 me-1 mb-2 dark:bg-green-600 dark:hover:bg-green-800 dark:focus:ring-green-800">
               Summarize
               <svg class="rtl:rotate-180 w-3.5 h-3.5 ms-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 10">

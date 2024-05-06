@@ -41,7 +41,7 @@ const ShowTeacherQuiz = () => {
   return (
 
     <div className='bodyTeacherQuiz p-3' >
-
+      
        {quizzes.loading === true && (
           <div className="flex items-center justify-center h-screen">
           <Spinner className="h-12 w-12" />

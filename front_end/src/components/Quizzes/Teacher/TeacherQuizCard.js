@@ -29,11 +29,13 @@ const TeacherQuizCard = (props) => {
     })
   }
 
+
   return (
     <div className='card-quiz'>  
       <div class="quizCard py-2">
         <div class="mainCardQuiz mx-0.5 p-3.5 bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-gray-700">
           <img src={quiztime} height={50} alt="" />
+
           <h3 class="mb-1 text-2xl font-bold tracking-tight text-cyan-800 dark:text-cyan-800">{props.lessonName}</h3>
           <p class="mb-2 text-xl font-medium text-cyan-600">Quiz</p>
 

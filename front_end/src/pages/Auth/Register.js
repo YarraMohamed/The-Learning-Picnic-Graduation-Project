@@ -198,7 +198,6 @@ const RegisterFun = (e)=>{
                                 Register Account
                             </button>
 						</div>
-						
 					</form>
                       </div>
                       <div class="w-full h-auto bg-gray-400 dark:bg-gray-800 hidden lg:block lg:w-2/5 bg-cover rounded-r-lg bg-center"

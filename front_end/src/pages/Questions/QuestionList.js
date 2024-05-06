@@ -24,6 +24,15 @@ const questions = [
             {text:"camouflage", correct: true},
         ]
     },
+    {
+        question: "Which is the smallest continent in the world?",
+        answers: [
+            {text:"Asia", correct: false},
+            {text:"Arctic", correct: false},
+            {text:"Astralia", correct: true},
+            {text:"Africa", correct: false},
+        ]
+    }
 ];
 
 

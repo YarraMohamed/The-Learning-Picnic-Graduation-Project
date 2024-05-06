@@ -6,8 +6,10 @@ import { getAuthUser } from '../../helper/Storage'
 
 const ShowLessons = () => {
 
+
     const Auth = getAuthUser();
     if (Auth && Auth.role === "TEACHER") {
+        
         return (
             <ShowLessonsTeacher/>
         )
