@@ -13,7 +13,6 @@ const register = asyncWrapper(async (req, res, next) => {
     const oldUser = await User.findOne({ $or: [{ email: email }, { phone: phone }] });
     if (oldUser) {
         const error = appError.create("User already exists", 400, httpStatusText.FAIL)
-        // return next(error)
         return res.status(error.statusCode).json({error})
     }
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -184,7 +183,22 @@ const uploadImage = asyncWrapper(async (req, res, next) => {
     await user.save();
 
     res.json({ status: httpStatusText.SUCCESS, data: { user } });
-})
+});
+
+const searchAccount = asyncWrapper(async (req, res, next) => {
+    const { email , role } = req.query;
+     const user = await User.find({ email: email , role : userRoles[role.toUpperCase()] }); 
+    if (!user) {
+        const error = appError.create("No user found", 400, httpStatusText.FAIL);
+        return res.status(error.statusCode).json({ error });
+    }
+   
+    res.json({ status: httpStatusText.SUCCESS, data: { user } });
+});
+
+
+
+
 
 /* const logout = (req, res,) => {
     // const token = req.headers['Authorization'] || req.headers['authorization'] 
@@ -210,6 +224,7 @@ module.exports = {
     updateUser,
     addChildEmail,
     uploadImage,
-    getUserById
+    getUserById,
+    searchAccount
     //logout
 }

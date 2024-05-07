@@ -40,6 +40,10 @@ const memoryUpload = multer({
 }); */
 
 
+
+router.route("/search")
+      .get(verifyToken,lessonController.searchByName)
+
 router.route("/")
     .post(verifyToken,allowedTo(userRoles.TEACHER),upload.single('pdfFile'), lessonController.uploadLesson)
     .get(verifyToken,lessonController.retrieveLessons)
@@ -48,8 +52,6 @@ router.route("/:id")
     .get(verifyToken,lessonController.retrieveLesson)
     .delete(verifyToken,allowedTo(userRoles.TEACHER),lessonController.deleteLesson)
     .put(allowedTo(userRoles.TEACHER),upload.single('pdfFile'), lessonController.updateLesson)
-
-
 
 
 module.exports = router

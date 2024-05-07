@@ -9,8 +9,6 @@ const StudentDashboard = () => {
   const Navigate= useNavigate();
   const Auth = getAuthUser();
   
-  const [search, setSearch] = useState('');
-  
   const [students, setStudents] = useState({
     loading: true,
     results: [],
@@ -18,8 +16,7 @@ const StudentDashboard = () => {
     reload: 0
   });
 
-  useEffect(() => {
-    setStudents(prevStudents => ({ ...prevStudents, loading: true }));
+  const fetchAllStudents = () => {
     axios.get(`${process.env.REACT_APP_API_URL}/users`, {
       headers: {
         Authorization: `Bearer ${Auth.token}`,
@@ -29,15 +26,25 @@ const StudentDashboard = () => {
       }
     })
       .then((res) => {
-        setStudents(prevStudents => ({ ...prevStudents, results: res.data.users, loading: false, err: null }));
+        setStudents(prevStudents => ({
+          ...prevStudents,
+          results: res.data.users,
+          loading: false,
+          err: null
+        }));
       })
       .catch((err) => {
-        setStudents(prevStudents => ({ ...prevStudents, loading: false, err: "Error getting students" }));
-      })
-    
-    
-  }, [students.reload]);
-  
+        setStudents(prevStudents => ({
+          ...prevStudents,
+          loading: false,
+          err: "Error getting students"
+        }));
+      });
+  };
+
+  useEffect ( ()=>{
+    fetchAllStudents();
+  }, [students.reload])
   
 const deleteUser = (id) => {
      axios.delete(`${process.env.REACT_APP_API_URL}/users/`+ id, {
@@ -52,8 +59,41 @@ const deleteUser = (id) => {
         setStudents(prevStudents => ({ ...prevStudents, loading: false, err: "something went wrong , please try again later!" }));
       })
 }
-  
-  
+
+const searchAccount = (email) => {
+
+  if (!email.trim()) {
+    fetchAllStudents();
+    return;
+  }
+
+  axios.get(`${process.env.REACT_APP_API_URL}/users/searchAccount`, {
+    headers: {
+      Authorization: `Bearer ${Auth.token}`,
+    },
+    params: {
+      email: email,
+      role : "student"
+    },
+  })
+  .then((res) => {
+    // setStudents({...students,results:res.data.data.user,loading:false,err:null})
+    const searchResults = res.data.data.user;
+    if (searchResults.length === 0) {
+      setStudents({ ...students, results: [], loading: false });
+    } else {
+      setStudents({ ...students, results: searchResults, loading: false });
+    }
+  })
+  .catch((err) => {
+    setStudents(prevStudents => ({ ...prevStudents, loading: false, err: "something went wrong, please try again later!" }));
+  })
+};
+
+const handleSearchChange = (e) => {
+  searchAccount(e.target.value);
+};
+
 
   return (
     <div className="teacherDash min-h-screen bg-white p-6">
@@ -65,7 +105,7 @@ const deleteUser = (id) => {
        <div class="flex flex-1 items-center justify-center p-6">
     <div class="w-full max-w-lg">
         <form class="mt-5 sm:flex sm:items-center" >
-            <input class="inline w-full rounded-md border border-gray-600 bg-white py-2 pl-3 pr-3 leading-5 placeholder-gray-500 focus:border-[#0d3156] focus:text-black focus:outline-none focus:ring-1 focus:ring-[#0d3156] sm:text-sm" placeholder="Keyword" type="text" onChange={(e) => setSearch(e.target.value)} />
+            <input class="inline w-full rounded-md border border-gray-600 bg-white py-2 pl-3 pr-3 leading-5 placeholder-gray-500 focus:border-[#0d3156] focus:text-black focus:outline-none focus:ring-1 focus:ring-[#0d3156] sm:text-sm" placeholder="Keyword" type="search" name="search" autofocus="" onChange={handleSearchChange} />
                      <button type="submit" class="mt-3 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-[#0d3156] px-4 py-2 font-medium text-white shadow-sm hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Search</button>
         </form>
     </div>
