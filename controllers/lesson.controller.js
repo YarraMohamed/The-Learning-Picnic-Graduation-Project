@@ -126,8 +126,6 @@ const updateLesson = asyncWrapper(async (req, res, next) => {
     }
     if (name)
         lesson.name = name;
-
-    // Save the updated lesson
     await lesson.save();
 
     res.json({ status: httpStatusText.SUCCESS, data: { lesson } });
@@ -138,17 +136,13 @@ const downloadLesson = asyncWrapper(async (req,res,next) => {
     const lesson = await Lesson.findById(req.params.id)
     if (!lesson) {
         const error = appError.create('lesson not found', 400, httpStatusText.FAIL)
-         // return next(error)
          return res.status(error.statusCode).json({error})
     }
 
     const filePath = path.join(__dirname, '../uploads', lesson.pdfFile);
     console.log(filePath)
-
-        // Check if the file exists
         if (!fs.existsSync(filePath)) {
             const error = appError.create('pdf file not found', 404, httpStatusText.FAIL)
-           // return next(error)
         return res.status(400).json({error})
         }
 
@@ -160,11 +154,27 @@ const downloadLesson = asyncWrapper(async (req,res,next) => {
 
 });
 
+const searchByName = (asyncWrapper(async (req, res, next) => {
+    const { name } = req.query;
+    let query = {};
+
+    if (name) {
+        query = { name: { $regex: new RegExp(name, 'i') } };
+    }
+
+    const lessons = await Lesson.find(query);
+    
+    return res.json({ status: httpStatusText.SUCCESS, data: lessons });
+}));
+
+
 module.exports =
 {
     uploadLesson,
     retrieveLessons,
     retrieveLesson,
     deleteLesson,
-    updateLesson
+    updateLesson,
+    searchByName
+    
 }

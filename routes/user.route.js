@@ -34,6 +34,10 @@ const diskStorage = multer.diskStorage(
 const upload = multer({ storage: diskStorage, fileFilter })
 
 
+
+router.route("/searchAccount")
+    .get(verifyToken,allowedTo(userRoles.ADMIN),userController.searchAccount)
+    
 router.route("/register")
     .post(verifyToken, allowedTo(userRoles.ADMIN), userController.register)
 
@@ -56,6 +60,7 @@ router.route("/parent/:id")
 
 router.route("/profileImage")
     .post(verifyToken,upload.single('profileImage'), userController.uploadImage)
+
 
 /* router.route("/logout")
     .post(userController.logout) */

@@ -16,25 +16,36 @@ const TeacherDashboard = () => {
     reload: 0
   });
 
-  useEffect(() => {
-    setTeachers(prevTeachers => ({ ...prevTeachers, loading: true }));
+
+  const fetchAllTeachers = () => {
     axios.get(`${process.env.REACT_APP_API_URL}/users`, {
       headers: {
         Authorization: `Bearer ${Auth.token}`,
       },
       params: {
-        role: "teacher"
+        role: "teacher",
       }
     })
       .then((res) => {
-        setTeachers(prevTeachers => ({ ...prevTeachers, results: res.data.users, loading: false, err: null }));
+        setTeachers(prevTeachers => ({
+          ...prevTeachers,
+          results: res.data.users,
+          loading: false,
+          err: null
+        }));
       })
       .catch((err) => {
-        setTeachers(prevTeachers => ({ ...prevTeachers, loading: false, err: "Error getting students" }));
-      })
-    
-    
-  }, [teachers.reload]);
+        setTeachers(prevTeachers => ({
+          ...prevTeachers,
+          loading: false,
+          err: "Error getting students"
+        }));
+      });
+  };
+
+  useEffect ( ()=>{
+    fetchAllTeachers();
+  }, [teachers.reload])
 
   const deleteUser = (id) => {
      axios.delete(`${process.env.REACT_APP_API_URL}/users/`+ id, {
@@ -48,7 +59,40 @@ const TeacherDashboard = () => {
       .catch((err) => {
         setTeachers(prevTeachers => ({ ...prevTeachers, loading: false, err: "something went wrong , please try again later!" }));
       })
-  }
+  };
+
+  const searchAccount = (email) => {
+
+    if (!email.trim()) {
+      fetchAllTeachers();
+      return;
+    }
+
+    axios.get(`${process.env.REACT_APP_API_URL}/users/searchAccount`, {
+      headers: {
+        Authorization: `Bearer ${Auth.token}`,
+      },
+      params: {
+        email: email,
+        role : "teacher"
+      },
+    })
+    .then((res) => {
+      const searchResults = res.data.data.user;
+      if (searchResults.length === 0) {
+        setTeachers({ ...teachers, results: [], loading: false });
+      } else {
+        setTeachers({ ...teachers, results: searchResults, loading: false });
+      }
+    })
+    .catch((err) => {
+      setTeachers(prevTeachers => ({ ...prevTeachers, loading: false, err: "something went wrong, please try again later!" }));
+    })
+  };
+
+  const handleSearchChange = (e) => {
+    searchAccount(e.target.value);
+  };
 
   return (
     <div className="teacherDash min-h-screen bg-white p-6">
@@ -60,8 +104,8 @@ const TeacherDashboard = () => {
            <div class="flex flex-1 items-center justify-center p-6">
     <div class="w-full max-w-lg">
         <form class="mt-5 sm:flex sm:items-center">
-                      <input id="search" name="search" class="inline w-full rounded-md border border-gray-600 bg-white py-2 pl-3 pr-3 leading-5 placeholder-gray-500 focus:border-[#0d3156] focus:placeholder-gray-400 focus:outline-none focus:ring-1 focus:ring-[#0d3156] sm:text-sm" placeholder="Keyword" type="search" autofocus="" value="" />
-                      <button type="submit" class="mt-3 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-[#0d3156] px-4 py-2 font-medium text-white shadow-sm hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Search</button>
+                       <input class="inline w-full rounded-md border border-gray-600 bg-white py-2 pl-3 pr-3 leading-5 placeholder-gray-500 focus:border-[#0d3156] focus:text-black focus:outline-none focus:ring-1 focus:ring-[#0d3156] sm:text-sm" placeholder="Keyword" type="search" name="search" autofocus=""  onChange={handleSearchChange} />
+                     <button type="submit" class="mt-3 inline-flex w-full items-center justify-center rounded-md border border-transparent bg-[#0d3156] px-4 py-2 font-medium text-white shadow-sm hover:bg-indigo-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 sm:mt-0 sm:ml-3 sm:w-auto sm:text-sm">Search</button>
         </form>
     </div>
 </div>

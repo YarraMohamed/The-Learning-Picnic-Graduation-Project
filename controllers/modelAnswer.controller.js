@@ -38,7 +38,7 @@ const getModelAnswer = asyncWrapper(async (req, res, next) => {
     }
 
     const user = await User.findById(userId)
-    if(user.role === "TEACHER"){
+    if(user.role === "TEACHER" || user.role === "PARENT"){
         return res.status(200).json({ status: httpStatusText.SUCCESS, data: { modelAnswer: modelAnswer } });
 
     } else {
