@@ -25,7 +25,6 @@ const getModelAnswer = asyncWrapper(async (req, res, next) => {
     const quiz = await Quiz.findById(quizId)
     if (!quiz) {
         const error = appError.create('quiz not found', 400, httpStatusText.FAIL)
-        // return next(error)
         return res.status(error.statusCode).json({error})
     }
 

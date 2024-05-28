@@ -4,12 +4,14 @@ import axios from 'axios';
 import { getAuthUser } from '../../helper/Storage';
 import { useParams } from 'react-router-dom';
 import '../style/Questions.css';
+import { Alert } from "@material-tailwind/react";
 
 
 const Questions = () => {
 
 const Auth = getAuthUser();
   let { id } = useParams();
+  
   const [quiz, setQuiz] = useState({
     loading: true,
     results: [],
@@ -23,7 +25,13 @@ const Auth = getAuthUser();
     err: null,
     reload: 0
   });
+
+  const [userAnswer, setUserAnswer] = useState({
+    err: null,
+    message : null
+  });
     
+  const [userAnswers, setUserAnswers] = useState([]);
 
     useEffect(() => {
    setQuiz(prevQuiz => ({ ...prevQuiz, loading: true }));
@@ -46,7 +54,7 @@ const Auth = getAuthUser();
     axios
       .get(`${process.env.REACT_APP_API_URL}/modelAnswer/${id}`, {
         headers: {
-          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhcmVudG9uZUBnbWFpbC5jb20iLCJpZCI6IjY2MjMzMTBjYjI1MGI3MDk0YzNjM2E3YiIsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE3MTY4MzQ0MjQsImV4cCI6MjMxNjgzNDQyNH0.-NT0xP8jWDUqWoGTwIgkgnw_xn4WVkBiatXI3HJqRqk`
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlYWNoZXJAZ21haWwuY29tIiwiaWQiOiI2NjM3ZDExMDdhZDYxMjY0ODgxYjA5ZjMiLCJyb2xlIjoiVEVBQ0hFUiIsImlhdCI6MTcxNDkzNDAzMiwiZXhwIjoyMzE0OTM0MDMyfQ.FK8mVG1FTOnj91okiDxxOUjMS0Uk5qMsHjbEvPH3oxU`
         }
       })
       .then(resp => {
@@ -56,9 +64,7 @@ const Auth = getAuthUser();
         setAnswer(prevAnswer => ({ ...prevAnswer, err: err.response.data.error.message, loading: false }));
       });    
     }, [answer.reload]);
-
-
-
+  
     const quizzesButtonRef = useRef(null);
     const nextButtonRef = useRef(null);
     const answerButtonsRef = useRef(null);
@@ -112,28 +118,38 @@ const Auth = getAuthUser();
   }
   
         }
-        
-        
 
+        
 function startQuiz() {
     currentQuestionIndex = 0;
     score = 0;
     nextButton.innerHTML = "Next";
   showQuestion();
         }
-        
-      
-      
-function selectAnswer(e) {
     
+
+var userAnswers = []; 
+function selectAnswer(e) {
   const selectedquizbtn = e.target;
   if (selectedquizbtn.textContent === answer.results[currentQuestionIndex].answerText) {
     console.log("trueeeeee");
+    console.log(selectedquizbtn.textContent);
+    userAnswers.push({
+      questionIndex: currentQuestionIndex,
+      answerText: selectedquizbtn.textContent
+    });
+
   } else {
+    console.log("falseeee");
     console.log(selectedquizbtn.textContent);
     console.log(answer.results[currentQuestionIndex].answerText);
-    console.log("falseeee");
+    userAnswers.push({
+      questionIndex: currentQuestionIndex,
+      answerText: selectedquizbtn.textContent
+    });
+    
   }
+  console.log(userAnswers)
   const isCorrect = selectedquizbtn.textContent === answer.results[currentQuestionIndex].answerText;
     if (isCorrect) {
         selectedquizbtn.classList.add("correct");
@@ -148,19 +164,28 @@ function selectAnswer(e) {
         button.disabled = true;
     });
     nextButton.style.display = "block";
+
 }
+
+const submitAnswers = () => {
+  axios.post(`${process.env.REACT_APP_API_URL}/Answers/${id}`, { answers: userAnswers }, {
+    headers: {
+      Authorization: `Bearer ${Auth.token}`
+    }
+  })
+  .then(resp => {
+    setUserAnswer({...userAnswer , message:"Sumbitted Sucessfully"})
+  })
+  .catch(err => {
+    setUserAnswer({...userAnswer,err : "Error"})
+  });
+};
 
 function showScore() {
     resetState();
     questionElement.innerHTML = `You Scored ${score} out of ${quiz.results.questions.length}!`;
-
-    // nextButton.innerHTML = "Play Again";
     quizzesButton.style.display = "block";
-
-    // (Incoming change)
-   // nextButton.innerHTML = "Return";
-   // nextButton.style.display = "block";
-
+    submitAnswers();
  }
 
         function handleNextButton() {
@@ -202,14 +227,20 @@ nextButton.addEventListener('click', () => {
       startQuiz();
     })
 
-  
-  
-  return (
-    
+  return ( 
 
     <div className='quizBody'>
       <>
         <div className="quizContainer">
+        {quiz.err && (
+        <>
+        <div>
+          <Alert  className='justify-center items-center mb-3' color="red">
+              <span className="text-xl">{quiz.err}</span>
+            </Alert>
+          </div>
+          </>
+      )}
         <h1>Quiz {quiz.results.lessonName}</h1>
 
         <div className="quiz">
@@ -237,3 +268,5 @@ nextButton.addEventListener('click', () => {
 }
 
 export default Questions;
+
+

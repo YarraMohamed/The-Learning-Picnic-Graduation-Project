@@ -51,7 +51,7 @@ const login = asyncWrapper(async (req, res, next) => {
     const matchedPassword = await bcrypt.compare(password, user.password)
     if (user && matchedPassword) {
         const token = await generateJWT({ email: user.email, id: user._id, role: user.role })
-        res.status(200).json({ status: httpStatusText.SUCCESS, data: { token : token , role : user.role} })
+        res.status(200).json({ status: httpStatusText.SUCCESS, data: { token : token , role : user.role , _id : user._id} })
         //blacklist.removeTokenFromBlacklist(token)
 
     }

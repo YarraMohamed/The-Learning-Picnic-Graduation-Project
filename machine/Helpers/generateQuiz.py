@@ -17,6 +17,8 @@ def generate_quiz(paragraphs):
     question_answer = tokenizer.decode(outputs[0], skip_special_tokens=False)
     question_answer = question_answer.replace(tokenizer.pad_token, "").replace(tokenizer.eos_token, "")
     question, answer = question_answer.split(tokenizer.sep_token)
+    question = question.strip()
+    answer = answer.strip()
 
     input_text = " ".join([question, tokenizerD.sep_token, answer, tokenizerD.sep_token, paragraph])
     inputs = tokenizerD(input_text, return_tensors="pt")
