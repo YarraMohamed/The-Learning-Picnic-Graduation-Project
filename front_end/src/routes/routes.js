@@ -51,12 +51,12 @@ export const routes = createBrowserRouter([
             {
             path: "/registration",
             element: <Register/>
-                },
-                {
+            },
+            {
             path: "/teacher",
             element: <TeacherDashboard/>
-        },
-        {
+            },
+            {
             path: "/parent", 
             children: [
                 {
@@ -114,8 +114,17 @@ export const routes = createBrowserRouter([
             element: <Account/>
         },
         {
-            path: "/quizzes",
-            element: <ShowQuiz/>
+            path: "/quizzes",   
+            children: [
+                {
+                    path: "",
+                    element: <ShowQuiz />
+                },
+                {
+             path: ":id",
+            element: <Questions/>,
+                }
+            ]
         },
         {
             path: '/reports',
@@ -130,10 +139,7 @@ export const routes = createBrowserRouter([
                 }
             ]
         },
-        {
-            path: ":id",
-            element: <Questions/>,
-        },
+        
         {
             path: '/modelAnswer',
             children : [
@@ -156,5 +162,5 @@ export const routes = createBrowserRouter([
         },   
     
     ]
-  }
+    }
 ]);

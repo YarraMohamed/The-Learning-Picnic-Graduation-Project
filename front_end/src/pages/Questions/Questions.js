@@ -1,12 +1,65 @@
-import React, {useEffect, useRef} from 'react'
+import React, {useEffect, useRef, useState} from 'react'
 import questions from "./QuestionList";
+import axios from 'axios';
+import { getAuthUser } from '../../helper/Storage';
+import { useParams } from 'react-router-dom';
 import '../style/Questions.css';
 
 
 const Questions = () => {
 
-    const quizzesButtonRef = useRef(null);
+const Auth = getAuthUser();
+  let { id } = useParams();
+  const [quiz, setQuiz] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    reload: 0
+  });
+    
+  const [answer, setAnswer] = useState({
+    loading: true,
+    results: [],
+    err: null,
+    reload: 0
+  });
+    
 
+    useEffect(() => {
+   setQuiz(prevQuiz => ({ ...prevQuiz, loading: true }));
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/quizes/${id}`, {
+        headers: {
+          Authorization: `Bearer ${Auth.token}`
+        }
+      })
+      .then(resp => {
+        setQuiz(prevQuiz => ({ ...prevQuiz, results: resp.data.data.quiz, loading: false }));
+      })
+      .catch(err => {
+        setQuiz(prevQuiz => ({ ...prevQuiz, err: err.response.data.error.message, loading: false }));
+      });    
+    }, [quiz.reload]);
+
+    useEffect(() => {
+   setAnswer(prevAnswer => ({ ...prevAnswer, loading: true }));
+    axios
+      .get(`${process.env.REACT_APP_API_URL}/modelAnswer/${id}`, {
+        headers: {
+          Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InBhcmVudG9uZUBnbWFpbC5jb20iLCJpZCI6IjY2MjMzMTBjYjI1MGI3MDk0YzNjM2E3YiIsInJvbGUiOiJQQVJFTlQiLCJpYXQiOjE3MTY4MzQ0MjQsImV4cCI6MjMxNjgzNDQyNH0.-NT0xP8jWDUqWoGTwIgkgnw_xn4WVkBiatXI3HJqRqk`
+        }
+      })
+      .then(resp => {
+          setAnswer(prevAnswer => ({ ...prevAnswer, results: resp.data.data.modelAnswer[0].answers, loading: false }));  
+      })
+      .catch(err => {
+        setAnswer(prevAnswer => ({ ...prevAnswer, err: err.response.data.error.message, loading: false }));
+      });    
+    }, [answer.reload]);
+
+
+
+    const quizzesButtonRef = useRef(null);
     const nextButtonRef = useRef(null);
     const answerButtonsRef = useRef(null);
     const questionElementRef = useRef(null);
@@ -29,7 +82,7 @@ const Questions = () => {
 
 
         let currentQuestionIndex = 0;
-        let score = 0;
+      let score = 0;
         
         function resetState() {
         
@@ -40,34 +93,41 @@ const Questions = () => {
         answerButtons.removeChild(answerButtons.firstChild);
     }
 }
-function showQuestion() {
+  function showQuestion() {
     resetState();
-    let currentQuestion = questions[currentQuestionIndex];
-    let questionNo = currentQuestionIndex + 1;
-    questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
-
-    currentQuestion.answers.forEach(answer => {
-        const button = document.createElement("button");
-        button.innerHTML = answer.text;
-        button.classList.add("quizbtn");
-        answerButtons.appendChild(button);
-        if (answer.correct) {
-            button.dataset.correct = answer.correct;
+    if (quiz.results.questions && (quiz.results.questions.length > 0)) {
+      let currentQuestion = quiz.results.questions[currentQuestionIndex];
+        let questionNo = currentQuestionIndex + 1;
+        questionElement.innerHTML = questionNo + '. ' + currentQuestion.questionText;
+         currentQuestion.choices.forEach(choice => {
+          const button = document.createElement('button');
+          button.innerHTML = choice.choiceText;
+          button.classList.add('quizbtn');
+          answerButtons.appendChild(button);
+            if (choice.correct) {
+                button.dataset.correct = choice.correct;
+            }
+            button.addEventListener("click", selectAnswer);
+        });
+  }
+  
         }
-        button.addEventListener("click", selectAnswer);
-    });
-}
+        
+        
 
 function startQuiz() {
     currentQuestionIndex = 0;
     score = 0;
     nextButton.innerHTML = "Next";
-    showQuestion();
-}
-
+  showQuestion();
+        }
+        
+      
+      
 function selectAnswer(e) {
+    
     const selectedquizbtn = e.target;
-    const isCorrect = selectedquizbtn.dataset.correct === "true";
+    const isCorrect = selectedquizbtn.dataset.correct === answer.results[currentQuestionIndex];
     if (isCorrect) {
         selectedquizbtn.classList.add("correct");
         score++;
@@ -75,7 +135,7 @@ function selectAnswer(e) {
         selectedquizbtn.classList.add("incorrect");
     }
     Array.from(answerButtons.children).forEach(button => {
-        if (button.dataset.correct === "true") {
+        if (button.dataset.correct === answer.results[currentQuestionIndex]) {
             button.classList.add("correct");
         }
         button.disabled = true;
@@ -85,7 +145,7 @@ function selectAnswer(e) {
 
 function showScore() {
     resetState();
-    questionElement.innerHTML = `You Scored ${score} out of ${questions.length}!`;
+    questionElement.innerHTML = `You Scored ${score} out of ${quiz.results.questions.length}!`;
 
     // nextButton.innerHTML = "Play Again";
     quizzesButton.style.display = "block";
@@ -96,33 +156,54 @@ function showScore() {
 
  }
 
-function handleNextButton() {
-    currentQuestionIndex++;
-    if (currentQuestionIndex < questions.length) {
-        showQuestion();
-    } else {
-        showScore();
-     }
-}
+        function handleNextButton() {
+      currentQuestionIndex++;
 
-nextButton.addEventListener("click", () => {
-    if (currentQuestionIndex < questions.length) {
+
+      if (currentQuestionIndex < quiz.results.questions.length) {
+        if ((currentQuestionIndex + 1) === quiz.results.questions.length) {
+          nextButton.style.display = 'none';
+          quizzesButton.style.display = 'block';
+          showQuestion();
+        } else {
+          showQuestion();
+        }
+      } else {
+                showScore();
+            }
+        }
+
+nextButton.addEventListener('click', () => {
+    if (quiz.results.questions === undefined) {
+              <div
+        class="inline-block h-8 w-8 animate-spin rounded-full border-4 border-solid border-current border-e-transparent align-[-0.125em] text-secondary motion-reduce:animate-[spin_1.5s_linear_infinite]"
+        role="status">
+        <span
+          class="!absolute !-m-px !h-px !w-px !overflow-hidden !whitespace-nowrap !border-0 !p-0 ![clip:rect(0,0,0,0)]"
+          >Loading...</span>
+      </div>
+      } else if (currentQuestionIndex < quiz.results.questions.length) {
         handleNextButton();
-    } else {
+      } else if ((currentQuestionIndex + 1) === quiz.results.questions.length) {
+        quizzesButton.style.display = 'block';
+        nextButton.style.display = 'none';
+      } else {
         startQuiz();
-    }
-})
+      }
+    });
 
-  startQuiz(); })
+      startQuiz();
+    })
 
   
   
   return (
+    
 
     <div className='quizBody'>
       <>
         <div className="quizContainer">
-        <h1>Quiz 1</h1>
+        <h1>Quiz {quiz.results.lessonName}</h1>
 
         <div className="quiz">
             <h2 id="question" ref={questionElementRef}>question goes here</h2>
@@ -134,7 +215,7 @@ nextButton.addEventListener("click", () => {
             </div>
 
                       <button id="next-btn" ref={nextButtonRef} type="button">Next</button>
-                      <a href="quizzes">
+                      <a href="/quizzes">
                           <button id="quizzes-btn" ref={quizzesButtonRef} type="button">See other quizzes</button>
                       </a>
             

@@ -197,7 +197,6 @@ const ShowQuizPT = () => {
     function handleNextButton() {
       currentQuestionIndex++;
 
-      
 
       if (currentQuestionIndex < quiz.results.questions.length) {
         if ((currentQuestionIndex + 1) === quiz.results.questions.length) {
@@ -239,7 +238,7 @@ const ShowQuizPT = () => {
     <div className="quiz-Body-PT">
       <>
         <div className="quiz-Container-PT">
-          <h1>Quiz ##</h1>
+          <h1>Quiz {quiz.results.lessonName}</h1>
           <div className="quiz-PT">
             <h2 id="question" ref={questionElementRef}>
               question goes here
