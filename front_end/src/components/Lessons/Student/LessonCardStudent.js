@@ -32,7 +32,7 @@ const LessonCardStudent = (props) => {
 
   return (
 
-    <div className=" card-lesson">
+    <div className="card-lesson">
       <div className="lessonCard py-2">  
         <div class="mainCardLesson mx-1 p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-zinc-400 dark:border-gray-700">
           <img src={studytime} height={50} alt=""/>
