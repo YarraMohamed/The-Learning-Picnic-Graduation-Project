@@ -126,8 +126,15 @@ function startQuiz() {
       
 function selectAnswer(e) {
     
-    const selectedquizbtn = e.target;
-    const isCorrect = selectedquizbtn.dataset.correct === answer.results[currentQuestionIndex];
+  const selectedquizbtn = e.target;
+  if (selectedquizbtn.textContent === answer.results[currentQuestionIndex].answerText) {
+    console.log("trueeeeee");
+  } else {
+    console.log(selectedquizbtn.textContent);
+    console.log(answer.results[currentQuestionIndex].answerText);
+    console.log("falseeee");
+  }
+  const isCorrect = selectedquizbtn.textContent === answer.results[currentQuestionIndex].answerText;
     if (isCorrect) {
         selectedquizbtn.classList.add("correct");
         score++;
@@ -135,7 +142,7 @@ function selectAnswer(e) {
         selectedquizbtn.classList.add("incorrect");
     }
     Array.from(answerButtons.children).forEach(button => {
-        if (button.dataset.correct === answer.results[currentQuestionIndex]) {
+        if (button.dataset.correct === "true") {
             button.classList.add("correct");
         }
         button.disabled = true;
