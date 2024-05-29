@@ -2,12 +2,14 @@ const Quiz = require("../models/quiz.model");
 const ModelAnswer = require("../models/modelAnswer.model")
 const userAnswers = require("../models/userAnswers.model");
 const quizResult = require("../models/quizResult.model");
+const User = require("../models/user.model")
 const Lesson = require("../models/lesson.model");
 const asyncWrapper = require("../middleware/asyncWrapper");
 const httpStatusText = require("../utils/httpStatusText");
 const appError = require("../utils/appError");
 const path = require("path");
 const { spawn } = require('child_process');
+
 
 const createQuiz = asyncWrapper(async (req, res, next) => {
     const lessonId = req.params.lessonId;
@@ -92,13 +94,28 @@ const deleteQuiz = asyncWrapper(async (req, res, next) => {
 });
 
 const retrieveQuiz = asyncWrapper(async (req, res, next) => {
+    const userId = req.currentUser.id;
+    const user = await User.findById(userId)
     const quiz = await Quiz.findById(req.params.quizId)
     if (!quiz) {
         const error = appError.create('quiz not found', 404, httpStatusText.FAIL)
         return res.status(error.statusCode).json({ error })
     }
-    else
+    if(user.role === "STUDENT"){
+        const isQuizAnswered = await userAnswers.findOne({userId : userId})
+        if(isQuizAnswered){
+            const error = appError.create('You already have taken this quiz', 400, httpStatusText.FAIL)
+            return res.status(error.statusCode).json({error})
+        }
+        if (quiz.deadline && new Date() > new Date(quiz.deadline)) {
+            const error = appError.create('The deadline has Passed', 400, httpStatusText.FAIL)
+            return res.status(error.statusCode).json({error})
+        }
+    } else {
         return res.json({ status: httpStatusText.SUCCESS, data: { quiz } })
+
+    }
+     
 });
 
 const retrieveQuizes = asyncWrapper(async (req, res, next) => {
