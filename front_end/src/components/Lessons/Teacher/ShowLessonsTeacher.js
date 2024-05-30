@@ -129,7 +129,7 @@ const ShowLessonsTeacher = () => {
        </div>
         <div>
           <Alert  className='justify-center items-center mb-3' color="red">
-              <span className="text-2xl">Please enter a valid name, or upload a new file.</span>
+              <span className="text-2xl">No Lessons Now, Come Back Later!</span>
             </Alert>
           </div>
           </>

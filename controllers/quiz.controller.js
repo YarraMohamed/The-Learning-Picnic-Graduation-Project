@@ -110,12 +110,13 @@ const retrieveQuiz = asyncWrapper(async (req, res, next) => {
         if (quiz.deadline && new Date() > new Date(quiz.deadline)) {
             const error = appError.create('The deadline has Passed', 400, httpStatusText.FAIL)
             return res.status(error.statusCode).json({error})
+        } else {
+            return res.json({ status: httpStatusText.SUCCESS, data: { quiz } })
         }
     } else {
         return res.json({ status: httpStatusText.SUCCESS, data: { quiz } })
 
     }
-     
 });
 
 const retrieveQuizes = asyncWrapper(async (req, res, next) => {

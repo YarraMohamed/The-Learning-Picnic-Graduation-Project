@@ -46,9 +46,7 @@ const getModelAnswer = asyncWrapper(async (req, res, next) => {
             const error = appError.create('You should take the quiz first', 400, httpStatusText.FAIL)
             return res.status(error.statusCode).json({error})
         }
-        
         res.status(200).json({ status: httpStatusText.SUCCESS, data: { modelAnswer: modelAnswer } });
-
     }
 
 });

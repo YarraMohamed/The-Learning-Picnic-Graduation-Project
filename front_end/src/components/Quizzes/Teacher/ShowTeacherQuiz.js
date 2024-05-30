@@ -4,6 +4,7 @@ import '../../../pages/style/ShowQuizTeacher.css'
 import axios from "axios";
 import { Spinner } from "@material-tailwind/react";
 import { getAuthUser } from "../../../helper/Storage.js";
+import { Alert } from "@material-tailwind/react";
 
 const ShowTeacherQuiz = () => {
 
@@ -49,6 +50,18 @@ const ShowTeacherQuiz = () => {
        )}
 
         <div className='row-auto'>
+        {quizzes.results.length === 0 && (
+        <>
+        <div className="flex items-center justify-center mb-5">
+        <Spinner className="h-12 w-12" />
+       </div>
+        <div>
+          <Alert  className='justify-center items-center mb-3' color="red">
+              <span className="text-2xl">No Quizzes Now, Come Back Later!</span>
+            </Alert>
+          </div>
+          </>
+      )}
         <div class="gridContainer grid grid-cols-6 gap-4">
         {quizzes.results && quizzes.results.map((quiz,index) => (
               <TeacherQuizCard key={quiz._id}  _id ={quiz._id} lessonName={quiz.lessonName} onDelete={handleLessonDelete} />
