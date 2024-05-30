@@ -193,30 +193,47 @@ const Questions = () => {
   return (
     <div className='quizBody'>
       <>
-        <div className="quizContainer">
-          {quiz.err && (
-            <div>
-              <Alert className='justify-center items-center mb-3' color="red">
-                <span className="text-xl">{quiz.err}</span>
-              </Alert>
+        {quiz.err ? (
+          <>
+          <div className="quizContainer">
+          <Alert className='justify-center items-center mb-3' color="red">
+              <span className="text-xl">{quiz.err}</span>
+            </Alert>
+            <h1>Quiz {quiz.results.lessonName}</h1>
+            <div className="quiz">
+              <h2 id="question" ref={questionElementRef}>{""}</h2>
+              <div id="answer-buttons" ref={answerButtonsRef}>
+                <button className="quizbtn" type="button">answer 1</button>
+                <button className="quizbtn" type="button">answer 2</button>
+                <button className="quizbtn" type="button">answer 3</button>
+                <button className="quizbtn" type="button">answer 4</button>
+              </div>
+              <button id="next-btn" ref={nextButtonRef} type="button">Next</button>
+              <a href="/quizzes">
+                <button id="quizzes-btn" ref={quizzesButtonRef} type="button">See other quizzes</button>
+              </a>
             </div>
-          )}
-
-          <h1>Quiz {quiz.results.lessonName}</h1>
-          <div className="quiz">
-            <h2 id="question" ref={questionElementRef}>question goes here</h2>
-            <div id="answer-buttons" ref={answerButtonsRef}>
-              <button className="quizbtn" type="button">answer 1</button>
-              <button className="quizbtn" type="button">answer 2</button>
-              <button className="quizbtn" type="button">answer 3</button>
-              <button className="quizbtn" type="button">answer 4</button>
-            </div>
-            <button id="next-btn" ref={nextButtonRef} type="button">Next</button>
-            <a href="/quizzes">
-              <button id="quizzes-btn" ref={quizzesButtonRef} type="button">See other quizzes</button>
-            </a>
           </div>
-        </div>
+
+          </>
+        ) : (
+          <div className="quizContainer">
+            <h1>Quiz {quiz.results.lessonName}</h1>
+            <div className="quiz">
+              <h2 id="question" ref={questionElementRef}>question goes here</h2>
+              <div id="answer-buttons" ref={answerButtonsRef}>
+                <button className="quizbtn" type="button">answer 1</button>
+                <button className="quizbtn" type="button">answer 2</button>
+                <button className="quizbtn" type="button">answer 3</button>
+                <button className="quizbtn" type="button">answer 4</button>
+              </div>
+              <button id="next-btn" ref={nextButtonRef} type="button">Next</button>
+              <a href="/quizzes">
+                <button id="quizzes-btn" ref={quizzesButtonRef} type="button">See other quizzes</button>
+              </a>
+            </div>
+          </div>
+        )}
       </>
     </div>
   );
