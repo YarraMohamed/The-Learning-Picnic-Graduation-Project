@@ -1,5 +1,6 @@
 import random
 
+
 def divide_text_into_paragraphs(text):
     num_paragraphs = random.randint(3, 7)
     words = text.split()

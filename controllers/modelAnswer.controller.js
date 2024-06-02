@@ -20,6 +20,8 @@ const deleteModelAnswer = asyncWrapper(async (req, res, next) => {
     }
 });
 
+
+
 const getModelAnswer = asyncWrapper(async (req, res, next) => {
     const quizId = req.params.quizId;
     const quiz = await Quiz.findById(quizId)
