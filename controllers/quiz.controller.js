@@ -67,6 +67,7 @@ const createQuiz = asyncWrapper(async (req, res, next) => {
     });
 
     pythonProcess.stderr.on('data', (data) => {
+        console.log(data)
         const error = appError.create("Error in generating the quiz", 400, httpStatusText.FAIL);
         res.status(error.statusCode).json({ error });
     });
@@ -102,7 +103,7 @@ const retrieveQuiz = asyncWrapper(async (req, res, next) => {
         return res.status(error.statusCode).json({ error })
     }
     if(user.role === "STUDENT"){
-        const isQuizAnswered = await userAnswers.findOne({userId : userId})
+        const isQuizAnswered = await userAnswers.findOne({quizId : req.params.quizId , userId: user._id})
         if(isQuizAnswered){
             const error = appError.create('You already have taken this quiz', 400, httpStatusText.FAIL)
             return res.status(error.statusCode).json({error})

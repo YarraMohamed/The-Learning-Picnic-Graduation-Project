@@ -43,7 +43,6 @@ const uploadLesson = asyncWrapper(async (req, res, next) => {
            return res.status(errorResponse.statusCode).json({ errorResponse });
         });
     });
-
     pythonProcess.stderr.on('data', (data) => {
         console.error(`Error from Python script: ${data}`);
         const error = appError.create("Error in generating the summary", 404, httpStatusText.FAIL);

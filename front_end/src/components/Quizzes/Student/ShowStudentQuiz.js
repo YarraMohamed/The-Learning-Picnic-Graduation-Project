@@ -33,28 +33,24 @@ const ShowStudentQuiz = () => {
    useEffect ( ()=>{
     loadQuizzes();
   }, [])
-  
 
-  return (
+return (
 
-   <div className='bodyTeacherQuiz p-3'>
+  <div className='bodyTeacherQuiz p-3' >
+    
      {quizzes.loading === true && (
-          <div className="flex justify-items-center justify-center h-screen mx-auto">
-          <Spinner className="h-12 w-12" />
-        </div>
-       )}
-
-      <div className="content-container p-3">
-        <div className='row-auto'>
-            <div class="gridContainer grid grid-cols-6 gap-4">
-            {quizzes.results && quizzes.results.map((quiz,index) => (
-              <StudentQuizCard key={quiz.index} lessonName={quiz.lessonName} _id={quiz._id} />
-            ))} 
-            </div>
-        </div>
-     </div>
+        <div className="flex items-center justify-center h-screen">
+        <Spinner className="h-12 w-12" />
+      </div>
+     )}
+      <div className='row-auto'>
+      <div class="gridContainer grid grid-cols-6 gap-4">
+      {quizzes.results && quizzes.results.map((quiz,index) => (
+            <StudentQuizCard key={quiz._id}  _id ={quiz._id} lessonName={quiz.lessonName} />
+          ))}
+      </div>
     </div>
-  )
+     </div>
+)
 }
-
 export default ShowStudentQuiz

@@ -20,3 +20,5 @@ def divide_text_into_paragraphs(text):
         paragraphs.append(paragraph)
 
     return paragraphs
+
+    
