@@ -51,7 +51,3 @@ Models :
   answers) based on the generated questions and answers.
 
 Kindly refer to our comprehensive documentation for in-depth information. Explore the detailed documentation to gain a deeper understanding of the subject matter.
-
-# Project Demo
-
-# Documentation
