@@ -10,7 +10,7 @@ const StudentQuizCard = (props) => {
 
   console.log(props)
   return (
-    <div className='card-quiz min-h-screen'>  
+    <div className='card-quiz'>  
       
       <div class="quizCard py-2">
               <div class="mainCardQuiz mx-auto p-4 bg-white border border-gray-200 rounded-lg shadow dark:bg-white dark:border-gray-700">

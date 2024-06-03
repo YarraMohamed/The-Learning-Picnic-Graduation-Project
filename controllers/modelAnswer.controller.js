@@ -20,6 +20,8 @@ const deleteModelAnswer = asyncWrapper(async (req, res, next) => {
     }
 });
 
+
+
 const getModelAnswer = asyncWrapper(async (req, res, next) => {
     const quizId = req.params.quizId;
     const quiz = await Quiz.findById(quizId)
@@ -35,23 +37,23 @@ const getModelAnswer = asyncWrapper(async (req, res, next) => {
         const error = appError.create('no model answer found for this quiz', 400, httpStatusText.FAIL)
         return res.status(error.statusCode).json({error})
     }
-
     const user = await User.findById(userId)
     if(user.role === "TEACHER" || user.role === "PARENT"){
         return res.status(200).json({ status: httpStatusText.SUCCESS, data: { modelAnswer: modelAnswer } });
-
     } else {
-        const isQuizAnswered = await userAnswers.findOne({userId : userId})
+        const isQuizAnswered = await userAnswers.findOne({quizId : quizId , userId:userId})
         if(!isQuizAnswered){
             const error = appError.create('You should take the quiz first', 400, httpStatusText.FAIL)
             return res.status(error.statusCode).json({error})
         }
-        
         res.status(200).json({ status: httpStatusText.SUCCESS, data: { modelAnswer: modelAnswer } });
-
     }
 
 });
+
+
+
+
 
 module.exports = {
     deleteModelAnswer,

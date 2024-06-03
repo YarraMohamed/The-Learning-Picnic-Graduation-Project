@@ -18,7 +18,7 @@ const ModelAnswer = () => {
       try {
         const questionsResponse = await axios.get(`${process.env.REACT_APP_API_URL}/quizes/${id}`, {
           headers: {
-            Authorization: `Bearer ${Auth.token}`
+            Authorization: `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6IkFkbWluQGdtYWlsLmNvbSIsImlkIjoiNjY1ODkwMzJkNDMyOWFjNDA0N2Q4ZTRhIiwicm9sZSI6IkFETUlOIiwiaWF0IjoxNzE3MDgwMTE0LCJleHAiOjIzMTcwODAxMTR9.XLUIK3P-kVv-bfG4o9EYJs0ObQ7oapNco11LiuhkfhM`
           }
         });
         setQuestions(questionsResponse.data.data.quiz.questions);
@@ -40,6 +40,7 @@ const ModelAnswer = () => {
 
     fetchData();
   }, [id, Auth.token]);
+  
   return (
     <div className="modelAnswer min-h-screen p-2"> 
       <div className='pageTitle text-white flex justify-content-between mb-6'>

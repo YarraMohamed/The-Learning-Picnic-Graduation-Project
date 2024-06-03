@@ -11,7 +11,7 @@ const LessonAddition = () => {
   const [lesson,setLesson] = useState({
     name :"",
     err : null,
-    loading : false,
+    loading : true,
     successMessage : null,
     fileUploaded: false,
     uploadedFileName: '',
@@ -76,6 +76,14 @@ const LessonAddition = () => {
           )} 
 
          {/* Success Alert */}
+          {lesson.successMessage && lesson.loading === false && (
+            <div className="flex w-full flex-col gap-6">
+            <Alert  className='justify-center items-center mb-3' color="blue">
+              <span className="text-2xl">Successfully Uploaded</span>
+            </Alert>
+            </div>
+          )} 
+
           {lesson.successMessage && (
             <div className="flex w-full flex-col gap-6">
             <Alert  className='justify-center items-center mb-3' color="blue">

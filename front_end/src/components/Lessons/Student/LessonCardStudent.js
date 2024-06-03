@@ -30,6 +30,8 @@ const LessonCardStudent = (props) => {
     })
   }
 
+
+
   return (
 
     <div className="card-lesson">
@@ -54,9 +56,6 @@ const LessonCardStudent = (props) => {
         </div>
     </div>
     </div>
-
-
-
   )
 }
 
